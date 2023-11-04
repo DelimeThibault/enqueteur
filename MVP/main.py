@@ -43,7 +43,6 @@ class GestionSuspect(cmd.Cmd):
         print(f"Suspect ajouté avec succès. ID du suspect : {self.id}")
         self.id += 1
 
-
     def do_afficher(self, _):
         """Afficher la liste des suspects"""
         if not self.dict_suspects:
