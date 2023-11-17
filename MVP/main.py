@@ -1,19 +1,29 @@
 """MVP permettant de créer une enquête, ajouter un suspect avec différentes informations et de lier
 une enquête avec un suspect."""
+import json
 import cmd
 
 
 class Enquete:
     """Permet d'initialiser la classe Enquete avec les différents attributs."""
-    def __init__(self, nom, lieu, date):
+    def __init__(self, nom, lieu, date, suspects=None):
         self.nom = nom
         self.lieu = lieu
         self.date = date
-        self.suspects = []
+        self.suspects = suspects if suspects is not None else []
+
+    def to_dict(self):
+        return {
+            "nom": self.nom,
+            "lieu": self.lieu,
+            "date": self.date,
+            "suspects": [s.to_dict() for s in self.suspects]
+        }
 
 
 class Suspect:
     """Permet d'initialiser la class Suspect avec les différents attributs."""
+
     def __init__(self, prenom, nom, age, nationalite, taille, description):
         self.prenom = prenom
         self.nom = nom
@@ -21,6 +31,17 @@ class Suspect:
         self.nationalite = nationalite
         self.taille = taille
         self.description = description
+
+    def to_dict(self):
+        """permet d'ajouter suspect dans le dictionnaire"""
+        return {
+            "prenom": self.prenom,
+            "nom": self.nom,
+            "age": self.age,
+            "nationalite": self.nationalite,
+            "taille": self.taille,
+            "description": self.description
+        }
 
 
 class GestionSuspect(cmd.Cmd):
@@ -34,6 +55,44 @@ class GestionSuspect(cmd.Cmd):
         self.dict_enquetes = {}
         self.id_suspect = 1
         self.id_enquete = 1
+        self.charger_donnees()
+
+    def sauvegarder_donnees(self):
+        """permet de sauvegarder les données dans le fichier json"""
+        with open('donnees.json', 'w') as fichier:
+            data = {
+                "suspects": {id: suspect.to_dict() for id, suspect in self.dict_suspects.items()},
+                "enquetes": {id: enquete.to_dict() for id, enquete in self.dict_enquetes.items()}
+            }
+            json.dump(data, fichier)
+
+    def charger_donnees(self):
+        """permet de charger les données dans le fichier json"""
+        try:
+            with open('donnees.json', 'r') as fichier:
+                data = json.load(fichier)
+                self.dict_suspects = {int(id): Suspect(**suspect) for id, suspect in data["suspects"].items()}
+                self.id_suspect = max(self.dict_suspects.keys(), default=0) + 1
+
+                self.dict_enquetes = {}
+                for id, enquete in data["enquetes"].items():
+                    # Reconstitution des suspects pour chaque enquête
+                    suspects = []
+                    for suspect_data in enquete["suspects"]:
+                        if isinstance(suspect_data, dict):  # Le suspect est déjà un dictionnaire
+                            suspects.append(Suspect(**suspect_data))
+                        else:  # Le suspect est référencé par son identifiant
+                            suspect_id = int(suspect_data)
+                            if suspect_id in self.dict_suspects:
+                                suspects.append(self.dict_suspects[suspect_id])
+
+                    self.dict_enquetes[int(id)] = Enquete(enquete["nom"], enquete["lieu"], enquete["date"], suspects)
+                self.id_enquete = max(self.dict_enquetes.keys(), default=0) + 1
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.dict_suspects = {}
+            self.dict_enquetes = {}
+            self.id_suspect = 1
+            self.id_enquete = 1
 
     def do_ajouter_suspect(self, _):
         """Ajouter un suspect"""
@@ -54,6 +113,7 @@ class GestionSuspect(cmd.Cmd):
         self.dict_suspects[self.id_suspect] = Suspect(prenom, nom, age, nationalite, taille, description)
         print(f"Suspect ajouté avec succès. ID du suspect : {self.id_suspect}")
         self.id_suspect += 1
+        self.sauvegarder_donnees()
 
     def do_ajouter_enquete(self, _):
         """Ajouter une enquête"""
@@ -64,6 +124,7 @@ class GestionSuspect(cmd.Cmd):
         self.dict_enquetes[self.id_enquete] = Enquete(nom, lieu, date)
         print(f"Enquête ajoutée avec succès. ID de l'enquête : {self.id_enquete}")
         self.id_enquete += 1
+        self.sauvegarder_donnees()
 
     def do_ajouter_suspect_enquete(self, _):
         """Ajouter un suspect à une enquête"""
@@ -75,6 +136,7 @@ class GestionSuspect(cmd.Cmd):
             suspect = self.dict_suspects[id_suspect]
             enquete.suspects.append(suspect)
             print(f"Suspect ajouté à l'enquête '{enquete.nom}' avec succès.")
+            self.sauvegarder_donnees()
         else:
             print("ID d'enquête ou de suspect invalide.")
 
