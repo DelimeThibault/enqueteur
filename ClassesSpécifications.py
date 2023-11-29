@@ -57,9 +57,11 @@ class Enquete:
         Ajoute des Preuves liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
 
-        PRE : preuve doit être une instance de Preuve
+        PRE : /
         POST : None
         """
+        if not isinstance(preuve, Preuve):
+            raise TypeError("La preuve qui est ajoutée doit être une instance de Preuve")
         if preuve not in self.preuves :
             preuve.enqueteAssociee = self
             self.preuves.append(preuve)
