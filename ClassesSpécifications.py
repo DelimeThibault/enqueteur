@@ -19,6 +19,7 @@ class Enquete:
     - lieu (str) = Le lieu du crime
     - priorite (int) = La priorité de l'enquête
     - preuves (list) = la liste des preuves associées à cette enquête
+    - suspects (list) = la liste des suspects associées à cette enquête 
 
     """
 
