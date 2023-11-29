@@ -281,12 +281,12 @@ class FriseChronologiqueApp(App):
         layout = BoxLayout(orientation='vertical')
         scrollview = ScrollView()
 
-        elements_frise = self.enquete.elements_frise()
+        elementsFrise = self.enquete.elementsFrise()
 
         grid = GridLayout(cols=1, spacing=10, size_hint_y=None)
         grid.bind(minimum_height=grid.setter('height'))
 
-        for element in elements_frise:
+        for element in elementsFrise:
             label = Label(text=f"{element[0]}: {element[1]} - {element[2]}", size_hint_y=None, height=40)
             grid.add_widget(label)
 
