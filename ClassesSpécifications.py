@@ -206,6 +206,52 @@ class Preuve:
         self.dateDeDecouverte = dateDecouverte
         self.enqueteAssociee = None
 
+class Personne:
+    """
+    Classe représentant une Personne soit un enqueteur soit un suspect
+
+    Attributs :
+    - idPersonne (int) : l'identifiant de la personne
+    - nom (string) : le nom de la personne
+    - age (int) : l'age de la personne
+    - Type (string): si la personne est un enqueteur ou un suspect
+    """
+    
+    
+    def __init__(self, idPersonne: int,nom: str,age: int, type: str):
+        """
+        Crée une instance de la classe Personne
+
+        PRE : idPersonne doit être un entier, type doit etre défini soit suspect soit enqueteur
+        POST : Une Personne a été crée
+        RAISE :
+        """
+
+        self.idPersonne = idPersonne
+        self.nom = nom
+        self.age = age
+        self.type = type
+
+    def modifierPersonne(self) -> None:
+        """
+        Modifie les informations de la personne.
+
+        PRE :
+        POST :
+        """
+        pass
+
+    def SupprimerPersonne(self) -> None:
+        """
+        Supprime la Personne.
+
+        PRE :
+        POST :
+        """
+
+        pass
+        
+    
 
 class Suspect:
     """
@@ -259,6 +305,53 @@ class Suspect:
         """
 
 
+
+class Enqueteur:
+    """
+    Classe représentant un Enqueteur qui utilise une enquete
+
+    Attributs :
+    - idEnqueteur (int) : l'identifiant de l'enqueteur
+    - mdp (int) : mot de passe de l'enquteur pour accèder aux informations
+
+    """
+      def __init__(self, idEnqueteur: int, mdp:int):
+        """
+        Crée une instance de la classe Enquteur
+
+        PRE : idEnquteur doit être un entier, mdp doit etre un entier
+        POST : Un enquteur a été crée
+        RAISE :
+        """
+
+        self.idEnqueteur = idEnquteur
+        self.mdp = mdp
+
+
+      def modifierPersonne(self) -> None:
+        """
+        Modifie les informations de l'enquteur.
+
+        PRE :
+        POST :
+        """
+        pass
+
+      def SupprimerEnquteur(self) -> None:
+        """
+        Supprime l'enquteur.
+
+        PRE :
+        POST :
+        """
+
+        pass
+          
+
+    
+    
+
+
 class FriseChronologiqueApp(App):
     """
     Application kivy pour afficher une frise chronologique liée à une enquête 
@@ -299,6 +392,9 @@ class FriseChronologiqueApp(App):
         layout.add_widget(scrollview)
 
         return layout
+
+
+    
 
 
 # rem:  j'ai ajouté dans preuve deux attributs enqueteAssociee, dateDecouverte
