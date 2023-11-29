@@ -105,9 +105,13 @@ class Enquete:
         """
 
         pass
+        
     def elementsFrise(self)->List[tuple]:
         """
         Récupère les différents éléments importants pour pouvoir les afficher dans une frise
+        
+        PRE : / 
+        POST : crée un tableau constitué de tuples avec les différentes informations qui ont été récupérées dans la liste des suspects et la liste des preuves 
         """
         elements = []
         for preuve in self.preuves:
@@ -122,8 +126,8 @@ class Enquete:
         Crée une frise chronologique pour l'enquête avec les différents éléments
         repertoriés au cours du temps ( découverte d'une preuve, nouveau suspect, etc...)
 
-        PRE :
-        POST :
+        PRE : / 
+        POST : ouvre une fenêtre qui affiche la frise 
         """
         FriseChronologiqueApp(enquete=self).run()
 
@@ -227,9 +231,9 @@ class Suspect:
         """
         Crée une instance de la classe Suspect
 
-        PRE :
+        PRE : idSuspect, utilisateur doivent être des entiers 
         POST : Un Suspect a été crée
-        RAISE :
+        RAISE : 
         """
 
         self.enqueteAssociee = None
@@ -243,13 +247,32 @@ class Suspect:
         self.dateIncrimination = dateIncrimination
         self.adn = adn
         self.elementsIncriminants = []
+                     
+    def listeElementsIncriminants(self, preuve) :
+        """
+        remplit la liste des différents identifiants de preuves qui incrimine le suspect 
+
+        PRE : preuve doit être une instnace de preuve
+        POST : tableau contenant les identifiants de preuves 
+        RAISES : TypeError si preuve n'est pas une instance de Preuve
+        """
 
 class FriseChronologiqueApp(App):
     def __init__(self,enquete, **kwargs):
+        """
+        Initialise une instance de la classe FriseChronologiqueApp
+        PRE : enquete doit être une instance de la classe Enquete
+        POST :  Une instance de la classe FriseChronologiqueApp a été créée.
+        """
         super(FriseChronologiqueApp, self).__init__(**kwargs)
         self.enquete = enquete
 
     def build(self):
+        """
+        Construit l'interface utilisateur de l'application
+        PRE: / 
+        POST : Retourne un widget représentant l'interface utilisateur 
+        """
         layout = BoxLayout(orientation='vertical')
         elementsFrise = self.enquete.elementsFrise()
 
