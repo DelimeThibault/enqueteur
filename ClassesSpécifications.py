@@ -136,16 +136,16 @@ class Enquete:
         """
         Localise les lieux ou ont été trouvés les preuves liées à l'enquête
 
-        PRE :
-        POST :
+        PRE : Encodage du lieux ou a été trouvé la preuve
+        POST : Retourne l'addresse des lieux ou on été trouvé la preuve
         """
         pass
 
     def localiseAddresseSuspects(self) -> str:
         """Localise les différents suspects grâce à leur addresses
 
-        PRE :
-        POST :
+        PRE : /
+        POST : Retourne l'addresse du suspect
 
         """
         pass
@@ -222,7 +222,7 @@ class Personne:
         """
         Crée une instance de la classe Personne
 
-        PRE : idPersonne doit être un entier, type doit etre défini soit suspect soit enqueteur
+        PRE : idPersonne doit être un entier, une personne doit etre soit suspect soit enqueteur
         POST : Une Personne a été crée
         RAISE :
         """
@@ -236,8 +236,8 @@ class Personne:
         """
         Modifie les informations de la personne.
 
-        PRE :
-        POST :
+        PRE : les modifications doivent respecter les formats ci dessus
+        POST : modification de la personne
         """
         pass
 
@@ -245,8 +245,8 @@ class Personne:
         """
         Supprime la Personne.
 
-        PRE :
-        POST :
+        PRE : /
+        POST : Supprimer la personne
         """
 
         pass
@@ -328,12 +328,12 @@ class Enqueteur:
         self.mdp = mdp
 
 
-      def modifierPersonne(self) -> None:
+      def modifierEnqueteur(self) -> None:
         """
         Modifie les informations de l'enquteur.
 
-        PRE :
-        POST :
+        PRE : les modifications doivent respecter les formats ci dessus
+        POST : Les données de l'enqueteur ont été modifié
         """
         pass
 
@@ -341,8 +341,8 @@ class Enqueteur:
         """
         Supprime l'enquteur.
 
-        PRE :
-        POST :
+        PRE : /
+        POST : Supprime l'enquteur
         """
 
         pass
