@@ -120,7 +120,7 @@ class Enquete:
         for suspect in self.suspects:
             elements.append((suspect.dateIncrimination, 'Suspect', f"Nom : {suspect.nom}, Adresse : {suspect.adresse}"))
         return elements
-    
+
     def creerFriseChrono(self) -> None:
         """
         Crée une frise chronologique pour l'enquête avec les différents éléments
@@ -130,7 +130,6 @@ class Enquete:
         POST : ouvre une fenêtre qui affiche la frise
         """
         FriseChronologiqueApp(enquete=self).run()
-
 
     def localiserLieuxPreuves(self) -> str:
         """
@@ -206,6 +205,7 @@ class Preuve:
         self.dateDeDecouverte = dateDecouverte
         self.enqueteAssociee = None
 
+
 class Personne:
     """
     Classe représentant une Personne soit un enqueteur soit un suspect
@@ -216,9 +216,8 @@ class Personne:
     - age (int) : l'age de la personne
     - Type (string): si la personne est un enqueteur ou un suspect
     """
-    
-    
-    def __init__(self, idPersonne: int,nom: str,age: int, type: str):
+
+    def __init__(self, idPersonne: int, nom: str, age: int, type: str):
         """
         Crée une instance de la classe Personne
 
@@ -250,15 +249,14 @@ class Personne:
         """
 
         pass
-        
-    
 
-class Suspect:
+
+class Suspect(Personne):
     """
     Classe représentant un suspect qui est lié a une enquête en cours
 
     Attributs :
-    - idSuspect (int) : l'identifiant du suspect
+    - attributs hérités de Personne ( nom , age, idPersonne, type )
     - nom (string) : le nom du suspect
     - dateNaissance (date): la date de naissance du suspect
     - adresse (string) : l'adresse du suspect
@@ -273,49 +271,44 @@ class Suspect:
 
     """
 
-    def __init__(self, idSuspect: int, nom: str, dateNaissance: date, adresse: str, utilisateur: int, nationalité: str,
-                 taille: str, dateIncrimination: date, adn: str):
-        """
-        Crée une instance de la classe Suspect
+    def __init__(self, idPersonne: int, nom: str, dateNaissance: date, age: int, type: str, adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: date, adn: str):
 
-        PRE : idSuspect, utilisateur doivent être des entiers
-        POST : Un Suspect a été crée
-        RAISE :
-        """
 
-        self.enqueteAssociee = None
-        self.idSuspect = idSuspect
-        self.nom = nom
+
+        super().__init__(idPersonne,nom, age, type)
         self.dateNaissance = dateNaissance
         self.adresse = adresse
         self.utilisateur = utilisateur
-        self.nationalité = nationalité
+        self.nationalite = nationalite
         self.taille = taille
         self.dateIncrimination = dateIncrimination
         self.adn = adn
         self.elementsIncriminants = []
-
-    def listeElementsIncriminants(self, preuve):
-        """
-        remplit la liste des différents identifiants de preuves qui incriminent le suspect
-
-        PRE : preuve doit être une instnace de preuve
-        POST : tableau contenant les identifiants de preuves
-        RAISES : TypeError si preuve n'est pas une instance de Preuve
-        """
+        self.enqueteAssociee = None
 
 
+def listeElementsIncriminants(self, preuve):
+    """
+    remplit la liste des différents identifiants de preuves qui incriminent le suspect
 
-class Enqueteur:
+    PRE : preuve doit être une instnace de preuve
+    POST : tableau contenant les identifiants de preuves
+    RAISES : TypeError si preuve n'est pas une instance de Preuve
+    """
+
+
+class Enqueteur(Personne):
     """
     Classe représentant un Enqueteur qui utilise une enquete
 
     Attributs :
+    - attributs hérités de Personne ( nom , age, idPersonne, type ) 
     - idEnqueteur (int) : l'identifiant de l'enqueteur
     - mdp (int) : mot de passe de l'enquteur pour accèder aux informations
 
     """
-      def __init__(self, idEnqueteur: int, mdp:int):
+
+    def __init__(self, idEnqueteur: int, mdp: int, nom: str, idPersonne: int, age: int, type: str):
         """
         Crée une instance de la classe Enquteur
 
@@ -323,12 +316,11 @@ class Enqueteur:
         POST : Un enquteur a été crée
         RAISE :
         """
-
-        self.idEnqueteur = idEnquteur
+        super().__init__(idPersonne,nom,  age, type)
+        self.idEnqueteur = idEnqueteur
         self.mdp = mdp
 
-
-      def modifierEnqueteur(self) -> None:
+    def modifierEnqueteur(self) -> None:
         """
         Modifie les informations de l'enquteur.
 
@@ -337,7 +329,7 @@ class Enqueteur:
         """
         pass
 
-      def SupprimerEnquteur(self) -> None:
+    def SupprimerEnquteur(self) -> None:
         """
         Supprime l'enquteur.
 
@@ -346,10 +338,6 @@ class Enqueteur:
         """
 
         pass
-          
-
-    
-    
 
 
 class FriseChronologiqueApp(App):
@@ -358,7 +346,7 @@ class FriseChronologiqueApp(App):
 
     Attibuts :
     - enquete (instance de Enquete) : L'instance de la classe Enquete associé à la frise 
-    
+
     """
 
     def __init__(self, enquete, **kwargs):
@@ -394,14 +382,7 @@ class FriseChronologiqueApp(App):
         return layout
 
 
-    
 
-
-# rem:  j'ai ajouté dans preuve deux attributs enqueteAssociee, dateDecouverte
-# rem : j'ai ajouté dans enquête un attribut preuve qui est une liste
-# rem : j'ai ajouté une méthode enqueteRésolue dans la classe enquete
-# rem : j'ai changé ajouterInformations en ajouterPreuves et ajouterSuspects
-# rem : j'ai changé localiserlieux en localiserlieuxPreuves et localiserAddressesSuspects
 """
 test Unitaires qu'on peut prévoir : 
 - tester tout les raises 
@@ -409,7 +390,6 @@ test Unitaires qu'on peut prévoir :
 - tester tout les constructeurs 
 """
 
-# à faire -> ajouter un attribut enquête associée a suspect et aussi un attribut elementsAcharge et éventuellement ADN, empreintes digitales,etc (tout se qui pourrait incriminer un suspect)
 
 # Petit Exemple D'utilisation
 
