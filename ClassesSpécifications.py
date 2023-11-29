@@ -1,8 +1,11 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
 from datetime import date
 from typing import List
+
 
 class Enquete:
     """
