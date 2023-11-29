@@ -56,7 +56,7 @@ class Enquete:
 
 
 
-    def ajouterPreuve(self, preuve) -> None :
+    def associerPreuve(self, preuve) -> None :
         """
         Ajoute des Preuves liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
@@ -72,7 +72,7 @@ class Enquete:
             self.preuves.append(preuve)
 
 
-    def ajouterSuspect(self,suspect)-> None:
+    def associerSuspect(self,suspect)-> None:
         """
         Ajoute des Suspects liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
@@ -250,7 +250,7 @@ class Suspect:
                      
     def listeElementsIncriminants(self, preuve) :
         """
-        remplit la liste des différents identifiants de preuves qui incrimine le suspect 
+        remplit la liste des différents identifiants de preuves qui incriminent le suspect 
 
         PRE : preuve doit être une instnace de preuve
         POST : tableau contenant les identifiants de preuves 
@@ -258,6 +258,8 @@ class Suspect:
         """
 
 class FriseChronologiqueApp(App):
+    """
+    """
     def __init__(self,enquete, **kwargs):
         """
         Initialise une instance de la classe FriseChronologiqueApp
@@ -313,8 +315,8 @@ enquete1 = Enquete ( idEnquete=1, titre="Enquête A", lieu="Ville A", dateDebut=
 preuve1 = Preuve ( idPreuve= 1 , type='Sang/ADN', description='Sang Retrouvé sur la scène de crime', lieu='Scène de Crime', dateDecouverte = date(2023,1,1) ,utilisateur=5)
 preuve2 = Preuve ( idPreuve= 5 , type='Mobile', description='Témoignage qui dit que la victime et le suspect n° 4 ne se kiffaient pas de ouf' , lieu='Voisinage Du suspect', dateDecouverte=date(2023,4,3),utilisateur=5 )
 
-enquete1.ajouterPreuve(preuve1)
-enquete1.ajouterPreuve(preuve2)
+enquete1.associerPreuve(preuve1)
+enquete1.associerPreuve(preuve2)
 
 
 for i in enquete1.preuves:
