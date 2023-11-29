@@ -22,11 +22,12 @@ class Enquete:
     - lieu (str) = Le lieu du crime
     - priorite (int) = La priorité de l'enquête
     - preuves (list) = la liste des preuves associées à cette enquête
-    - suspects (list) = la liste des suspects associées à cette enquête 
+    - suspects (list) = la liste des suspects associées à cette enquête
 
     """
 
-    def __init__(self, idEnquete: int, titre: str,dateDebut: date ,lieu: str,priorite :int ,statut: str ='En cours') -> None:
+    def __init__(self, idEnquete: int, titre: str, dateDebut: date, lieu: str, priorite: int,
+                 statut: str = 'En cours') -> None:
         """
         Initialise une instance de la classe Enquete.
 
@@ -47,7 +48,6 @@ class Enquete:
         if not isinstance(dateDebut, date):
             raise TypeError("dateDebut doit être une instance de la classe date.")
 
-
         self.idEnquete = idEnquete
         self.titre = titre
         self.dateDebut = dateDebut
@@ -57,9 +57,7 @@ class Enquete:
         self.preuves = []
         self.suspects = []
 
-
-
-    def associerPreuve(self, preuve) -> None :
+    def associerPreuve(self, preuve) -> None:
         """
         Ajoute des Preuves liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
@@ -70,12 +68,11 @@ class Enquete:
         """
         if not isinstance(preuve, Preuve):
             raise TypeError("La preuve qui est ajoutée doit être une instance de Preuve")
-        if preuve not in self.preuves :
+        if preuve not in self.preuves:
             preuve.enqueteAssociee = self
             self.preuves.append(preuve)
 
-
-    def associerSuspect(self,suspect)-> None:
+    def associerSuspect(self, suspect) -> None:
         """
         Ajoute des Suspects liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
@@ -87,11 +84,11 @@ class Enquete:
 
         if not isinstance(suspect, Suspect):
             raise TypeError("Le suspect qui est ajouté doit être une instance de Suspect")
-        if suspect not in self.suspects :
+        if suspect not in self.suspects:
             suspect.enqueteAssociee = self
             self.preuves.append(suspect)
 
-    def modifierInformations(self) -> None :
+    def modifierInformations(self) -> None:
         """
         Modifie les informations de l'enquête.
 
@@ -99,7 +96,8 @@ class Enquete:
         POST :
         """
         pass
-    def supprimerInformations(self)-> None :
+
+    def supprimerInformations(self) -> None:
         """
         Supprime les informations de l'enquête.
 
@@ -108,34 +106,33 @@ class Enquete:
         """
 
         pass
-        
-    def elementsFrise(self)->List[tuple]:
+
+    def elementsFrise(self) -> List[tuple]:
         """
         Récupère les différents éléments importants pour pouvoir les afficher dans une frise
-        
-        PRE : / 
-        POST : crée un tableau constitué de tuples avec les différentes informations qui ont été récupérées dans la liste des suspects et la liste des preuves 
+
+        PRE : /
+        POST : retourne un tableau constitué de tuples avec les différentes informations qui ont été récupérées dans la liste des suspects et la liste des preuves
         """
         elements = []
         for preuve in self.preuves:
-            elements.append((preuve.dateDeDecouverte,'Preuve',f"Lieu : {preuve.lieu}, Type : {preuve.type}"))
+            elements.append((preuve.dateDeDecouverte, 'Preuve', f"Lieu : {preuve.lieu}, Type : {preuve.type}"))
         for suspect in self.suspects:
-            elements.append((suspect.dateIncrimination,'Suspect', f"Nom : {suspect.nom}, Adresse : {suspect.adresse}"))
-
-
-
+            elements.append((suspect.dateIncrimination, 'Suspect', f"Nom : {suspect.nom}, Adresse : {suspect.adresse}"))
+        return elements
+    
     def creerFriseChrono(self) -> None:
         """
         Crée une frise chronologique pour l'enquête avec les différents éléments
         repertoriés au cours du temps ( découverte d'une preuve, nouveau suspect, etc...)
 
-        PRE : / 
-        POST : ouvre une fenêtre qui affiche la frise 
+        PRE : /
+        POST : ouvre une fenêtre qui affiche la frise
         """
         FriseChronologiqueApp(enquete=self).run()
 
-        pass
-    def localiserLieuxPreuves(self)-> str :
+
+    def localiserLieuxPreuves(self) -> str:
         """
         Localise les lieux ou ont été trouvés les preuves liées à l'enquête
 
@@ -153,8 +150,7 @@ class Enquete:
         """
         pass
 
-
-    def enqueteResolue(self,idEnquete) -> str :
+    def enqueteResolue(self, idEnquete) -> str:
         """
         Change le statut d'une enquête en Classé, les données liées à cette enquete seront
         déplacées autre part
@@ -164,7 +160,8 @@ class Enquete:
 
         """
 
-class Preuve () :
+
+class Preuve:
     """
     Classe représentant une preuve qui est liée a une enquête en cours
 
@@ -178,7 +175,8 @@ class Preuve () :
     - enqueteAssociee (int) : recevra au moment de l'éxécution de la méthode ajouterPreuve l'identifiant de l'enquête
 
     """
-    def __init__(self,idPreuve:int , type: str, description: str,lieu: str, utilisateur: int, dateDecouverte: date):
+
+    def __init__(self, idPreuve: int, type: str, description: str, lieu: str, utilisateur: int, dateDecouverte: date):
         """
         Initialise une instance de la classe Preuve
 
@@ -234,9 +232,9 @@ class Suspect:
         """
         Crée une instance de la classe Suspect
 
-        PRE : idSuspect, utilisateur doivent être des entiers 
+        PRE : idSuspect, utilisateur doivent être des entiers
         POST : Un Suspect a été crée
-        RAISE : 
+        RAISE :
         """
 
         self.enqueteAssociee = None
@@ -250,20 +248,27 @@ class Suspect:
         self.dateIncrimination = dateIncrimination
         self.adn = adn
         self.elementsIncriminants = []
-                     
-    def listeElementsIncriminants(self, preuve) :
+
+    def listeElementsIncriminants(self, preuve):
         """
-        remplit la liste des différents identifiants de preuves qui incriminent le suspect 
+        remplit la liste des différents identifiants de preuves qui incriminent le suspect
 
         PRE : preuve doit être une instnace de preuve
-        POST : tableau contenant les identifiants de preuves 
+        POST : tableau contenant les identifiants de preuves
         RAISES : TypeError si preuve n'est pas une instance de Preuve
         """
 
+
 class FriseChronologiqueApp(App):
     """
+    Application kivy pour afficher une frise chronologique liée à une enquête 
+
+    Attibuts :
+    - enquete (instance de Enquete) : L'instance de la classe Enquete associé à la frise 
+    
     """
-    def __init__(self,enquete, **kwargs):
+
+    def __init__(self, enquete, **kwargs):
         """
         Initialise une instance de la classe FriseChronologiqueApp
         PRE : enquete doit être une instance de la classe Enquete
@@ -275,8 +280,8 @@ class FriseChronologiqueApp(App):
     def build(self):
         """
         Construit l'interface utilisateur de l'application
-        PRE: / 
-        POST : Retourne un widget représentant l'interface utilisateur 
+        PRE: /
+        POST : Retourne un widget représentant l'interface utilisateur
         """
         layout = BoxLayout(orientation='vertical')
         scrollview = ScrollView()
@@ -296,7 +301,6 @@ class FriseChronologiqueApp(App):
         return layout
 
 
-
 # rem:  j'ai ajouté dans preuve deux attributs enqueteAssociee, dateDecouverte
 # rem : j'ai ajouté dans enquête un attribut preuve qui est une liste
 # rem : j'ai ajouté une méthode enqueteRésolue dans la classe enquete
@@ -309,18 +313,21 @@ test Unitaires qu'on peut prévoir :
 - tester tout les constructeurs 
 """
 
-
 # à faire -> ajouter un attribut enquête associée a suspect et aussi un attribut elementsAcharge et éventuellement ADN, empreintes digitales,etc (tout se qui pourrait incriminer un suspect)
 
 # Petit Exemple D'utilisation
 
-enquete1 = Enquete ( idEnquete=1, titre="Enquête A", lieu="Ville A", dateDebut=date(2023,1,1), priorite=15)
-preuve1 = Preuve ( idPreuve= 1 , type='Sang/ADN', description='Sang Retrouvé sur la scène de crime', lieu='Scène de Crime', dateDecouverte = date(2023,1,1) ,utilisateur=5)
-preuve2 = Preuve ( idPreuve= 5 , type='Mobile', description='Témoignage qui dit que la victime et le suspect n° 4 ne se kiffaient pas de ouf' , lieu='Voisinage Du suspect', dateDecouverte=date(2023,4,3),utilisateur=5 )
+enquete1 = Enquete(idEnquete=1, titre="Enquête A", lieu="Ville A", dateDebut=date(2023, 1, 1), priorite=15)
+preuve1 = Preuve(idPreuve=1, type='Sang/ADN', description='Sang Retrouvé sur la scène de crime', lieu='Scène de Crime',
+                 dateDecouverte=date(2023, 1, 1), utilisateur=5)
+preuve2 = Preuve(idPreuve=5, type='Mobile',
+                 description='Témoignage qui dit que la victime et le suspect n° 4 ne se kiffaient pas de ouf',
+                 lieu='Voisinage Du suspect', dateDecouverte=date(2023, 4, 3), utilisateur=5)
 
 enquete1.associerPreuve(preuve1)
 enquete1.associerPreuve(preuve2)
 
-
 for i in enquete1.preuves:
     print(f'{i.idPreuve} : {i.type} : {i.description} : {i.lieu}')
+
+enquete1.creerFriseChrono()
