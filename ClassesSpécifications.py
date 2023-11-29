@@ -274,11 +274,20 @@ class FriseChronologiqueApp(App):
         POST : Retourne un widget représentant l'interface utilisateur 
         """
         layout = BoxLayout(orientation='vertical')
-        elementsFrise = self.enquete.elementsFrise()
+        scrollview = ScrollView()
 
-        for element in elementsFrise :
-            label = Label(text=f'{element[0]} : {element[1]} - {element[2]}')
-            layout.add_widget(label)
+        elements_frise = self.enquete.elements_frise()
+
+        grid = GridLayout(cols=1, spacing=10, size_hint_y=None)
+        grid.bind(minimum_height=grid.setter('height'))
+
+        for element in elements_frise:
+            label = Label(text=f"{element[0]}: {element[1]} - {element[2]}", size_hint_y=None, height=40)
+            grid.add_widget(label)
+
+        scrollview.add_widget(grid)
+        layout.add_widget(scrollview)
+
         return layout
 
 
