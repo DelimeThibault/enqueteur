@@ -398,7 +398,7 @@ test Unitaires qu'on peut prévoir :
 enquete1 = Enquete(idEnquete=1, titre="Enquête A", lieu="Ville A", dateDebut=date(2023, 1, 1), priorite=15)
 preuve1 = Preuve(idPreuve=1, type='Sang/ADN', description='Sang Retrouvé sur la scène de crime', lieu='Scène de Crime',
                  dateDecouverte=date(2023, 1, 1), utilisateur=5)
-preuve2 = Preuve(idPreuve=5, type='Mobile',
+preuve2 = Preuve(idPreuve=5, type='Témoignage',
                  description='Témoignage qui dit que la victime et le suspect n° 4 ne se kiffaient pas de ouf',
                  lieu='Voisinage Du suspect', dateDecouverte=date(2023, 4, 3), utilisateur=5)
 
