@@ -257,6 +257,7 @@ class Suspect(Personne):
 
     Attributs :
     - attributs hérités de Personne ( nom , age, idPersonne, type )
+    - idSuspect (int) : Identifiant du suspect
     - nom (string) : le nom du suspect
     - dateNaissance (date): la date de naissance du suspect
     - adresse (string) : l'adresse du suspect
@@ -271,11 +272,12 @@ class Suspect(Personne):
 
     """
 
-    def __init__(self, idPersonne: int, nom: str, dateNaissance: date, age: int, type: str, adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: date, adn: str):
+    def __init__(self, idPersonne: int, idSuspect : int , nom: str, dateNaissance: date, age: int, type: str, adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: date, adn: str):
 
 
 
         super().__init__(idPersonne,nom, age, type)
+        self.idSuspect = idSuspect
         self.dateNaissance = dateNaissance
         self.adresse = adresse
         self.utilisateur = utilisateur
