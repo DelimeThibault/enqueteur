@@ -289,14 +289,14 @@ class Suspect(Personne):
         self.enqueteAssociee = None
 
 
-def listeElementsIncriminants(self, preuve):
-    """
-    remplit la liste des différents identifiants de preuves qui incriminent le suspect
-
-    PRE : preuve doit être une instnace de preuve
-    POST : tableau contenant les identifiants de preuves
-    RAISES : TypeError si preuve n'est pas une instance de Preuve
-    """
+    def listeElementsIncriminants(self, preuve):
+        """
+        remplit la liste des différents identifiants de preuves qui incriminent le suspect
+    
+        PRE : preuve doit être une instnace de preuve
+        POST : tableau contenant les identifiants de preuves
+        RAISES : TypeError si preuve n'est pas une instance de Preuve
+        """
 
 
 class Enqueteur(Personne):
