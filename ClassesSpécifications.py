@@ -115,10 +115,12 @@ class Enquete:
         POST : retourne un tableau constitué de tuples avec les différentes informations qui ont été récupérées dans la liste des suspects et la liste des preuves
         """
         elements = []
+        elements.append((self.dateDebut, 'Début Enquête', f'Titre : {self.titre}, Lieu : {self.lieu}'))
         for preuve in self.preuves:
-            elements.append((preuve.dateDeDecouverte, 'Preuve', f"Lieu : {preuve.lieu}, Type : {preuve.type}"))
+            elements.append((preuve.dateDeDecouverte, f'Preuve n° {preuve.idPreuve}', f"Lieu : {preuve.lieu}, Type : {preuve.type}"))
         for suspect in self.suspects:
-            elements.append((suspect.dateIncrimination, 'Suspect', f"Nom : {suspect.nom}, Adresse : {suspect.adresse}"))
+            elements.append((suspect.dateIncrimination, f'Suspect n° {suspect.idSuspect}', f"Nom : {suspect.nom}, Adresse : {suspect.adresse}"))
+        elements.sort(key=lambda x: x[0])
         return elements
 
     def creerFriseChrono(self) -> None:
@@ -272,11 +274,9 @@ class Suspect(Personne):
 
     """
 
-    def __init__(self, idPersonne: int, idSuspect : int , nom: str, dateNaissance: date, age: int, type: str, adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: date, adn: str):
-
-
-
-        super().__init__(idPersonne,nom, age, type)
+    def __init__(self, idPersonne: int, idSuspect: int, nom: str, dateNaissance: date, age: int, type: str,
+                 adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: date, adn: str):
+        super().__init__(idPersonne, nom, age, type)
         self.idSuspect = idSuspect
         self.dateNaissance = dateNaissance
         self.adresse = adresse
@@ -288,11 +288,10 @@ class Suspect(Personne):
         self.elementsIncriminants = []
         self.enqueteAssociee = None
 
-
     def listeElementsIncriminants(self, preuve):
         """
         remplit la liste des différents identifiants de preuves qui incriminent le suspect
-    
+
         PRE : preuve doit être une instnace de preuve
         POST : tableau contenant les identifiants de preuves
         RAISES : TypeError si preuve n'est pas une instance de Preuve
@@ -304,7 +303,7 @@ class Enqueteur(Personne):
     Classe représentant un Enqueteur qui utilise une enquete
 
     Attributs :
-    - attributs hérités de Personne ( nom , age, idPersonne, type ) 
+    - attributs hérités de Personne ( nom , age, idPersonne, type )
     - idEnqueteur (int) : l'identifiant de l'enqueteur
     - mdp (int) : mot de passe de l'enquteur pour accèder aux informations
 
@@ -318,7 +317,7 @@ class Enqueteur(Personne):
         POST : Un enquteur a été crée
         RAISE :
         """
-        super().__init__(idPersonne,nom,  age, type)
+        super().__init__(idPersonne, nom, age, type)
         self.idEnqueteur = idEnqueteur
         self.mdp = mdp
 
@@ -344,10 +343,10 @@ class Enqueteur(Personne):
 
 class FriseChronologiqueApp(App):
     """
-    Application kivy pour afficher une frise chronologique liée à une enquête 
+    Application kivy pour afficher une frise chronologique liée à une enquête
 
     Attibuts :
-    - enquete (instance de Enquete) : L'instance de la classe Enquete associé à la frise 
+    - enquete (instance de Enquete) : L'instance de la classe Enquete associé à la frise
 
     """
 
@@ -384,14 +383,12 @@ class FriseChronologiqueApp(App):
         return layout
 
 
-
 """
 test Unitaires qu'on peut prévoir : 
 - tester tout les raises 
 - tester le fait de mettre deux fois la même preuve 
 - tester tout les constructeurs 
 """
-
 
 # Petit Exemple D'utilisation
 
