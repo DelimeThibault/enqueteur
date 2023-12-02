@@ -1,3 +1,11 @@
+
+###IDEES QUI POP LA COMME CA , FAIRE DE LA VISUALISATION DE DONNEES GENRE graphique de l'evolution de crimes par quartier, ce genre de choses
+
+### IDEES N°2 : FAIRE UN FAUX ECRAN DE CHARGEMENT avec une petite tête de sherlock holmes qui tourne en 3d comme ça pour flex
+
+
+
+
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -13,7 +21,11 @@ class Enquete:
 
     Auteurs : 2TL2 - 2
     Date : Novembre 2023
+    """
 
+    dictionnaireEnquetesResolues = {}
+
+    """
     Attributs:
     - idEnquete (int) = L'identifiant de l'enquête.
     - titre (str) = Le titre de l'enquête
@@ -151,16 +163,33 @@ class Enquete:
         """
         pass
 
-    def enqueteResolue(self, idEnquete) -> str:
+    def enqueteResolue(self) -> str:
         """
-        Change le statut d'une enquête en Classé, les données liées à cette enquete seront
-        déplacées autre part
+        Change le statut d'une enquête en Classé, supprime l'instance et les données liées à cette enquete seront
+        déplacées dans le dictionnaire "dictionnaireEnquetesResolues"
 
-        PRE : l'identifiant de l'enquête qui est résolue
-        POST : supprime cette instance
+
+        POST : Ajoute un dictionnaire contenant toutes les informations de l'enquête résolue à dict_global_enquetes_resolues,
+               puis supprime cette instance.
 
         """
 
+        self.statut="Classée/Résolue"
+        self.priorite = 0
+        infosEnquete = {
+            "idEnquete" : self.idEnquete,
+            "titre" : self.titre,
+            "dateDebut" : self.dateDebut,
+            "statut" : self.statut,
+            "lieu" : self.lieu,
+            "priorite" : self.priorite,
+            "preuves" : [p.toDict() for p in self.preuves],
+            "suspects" : [s.toDict() for s in self.suspects],
+        }
+        Enquete.dictionnaireEnquetesResolues[f'Enquete n° {self.idEnquete}'] = infosEnquete
+        retour = f"L'enquête {self.idEnquete} a bien été classé"
+        del self
+        return retour
 
 class Preuve:
     """
@@ -207,7 +236,20 @@ class Preuve:
         self.dateDeDecouverte = dateDecouverte
         self.enqueteAssociee = None
 
+    def toDict(self) -> dict:
+        """
+        Convertit l'instance de Preuve en un dictionnaire.
 
+        POST : Retourne un dictionnaire contenant les informations de la preuve.
+        """
+        return {
+            "idPreuve": self.idPreuve,
+            "type": self.type,
+            "description": self.description,
+            "lieu": self.lieu,
+            "utilisateur": self.utilisateur,
+            "dateDeDecouverte": self.dateDeDecouverte.isoformat(),
+        }
 class Personne:
     """
     Classe représentant une Personne soit un enqueteur soit un suspect
@@ -287,6 +329,7 @@ class Suspect(Personne):
         self.adn = adn
         self.elementsIncriminants = []
         self.enqueteAssociee = None
+
 
     def listeElementsIncriminants(self, preuve):
         """
@@ -406,3 +449,7 @@ for i in enquete1.preuves:
     print(f'{i.idPreuve} : {i.type} : {i.description} : {i.lieu}')
 
 enquete1.creerFriseChrono()
+
+enquete1.enqueteResolue()
+
+print(Enquete.dictionnaireEnquetesResolues)
