@@ -1,11 +1,3 @@
-
-###IDEES QUI POP LA COMME CA , FAIRE DE LA VISUALISATION DE DONNEES GENRE graphique de l'evolution de crimes par quartier, ce genre de choses
-
-### IDEES N°2 : FAIRE UN FAUX ECRAN DE CHARGEMENT avec une petite tête de sherlock holmes qui tourne en 3d comme ça pour flex
-
-
-
-
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
