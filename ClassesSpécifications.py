@@ -98,7 +98,7 @@ class Enquete:
             raise TypeError("Le suspect qui est ajouté doit être une instance de Suspect")
         if suspect not in self.suspects:
             suspect.enqueteAssociee = self
-            self.preuves.append(suspect)
+            self.suspects.append(suspect)
 
     def modifierInformations(self) -> None:
         """
@@ -128,10 +128,12 @@ class Enquete:
         """
         elements = []
         elements.append((self.dateDebut, 'Début Enquête', f'Titre : {self.titre}, Lieu : {self.lieu}'))
+
         for preuve in self.preuves:
-            elements.append((preuve.dateDeDecouverte, f'Preuve n° {preuve.idPreuve}', f"Lieu : {preuve.lieu}, Type : {preuve.type}"))
+                elements.append((preuve.dateDeDecouverte, f'Preuve n° {preuve.idPreuve}', f"Lieu : {preuve.lieu}, Type : {preuve.type}"))
         for suspect in self.suspects:
-            elements.append((suspect.dateIncrimination, f'Suspect n° {suspect.idSuspect}', f"Nom : {suspect.nom}, Adresse : {suspect.adresse}"))
+            elements.append((suspect.dateIncrimination, f'Suspect n° {suspect.idSuspect}',
+                             f"Nom : {suspect.nom}, Adresse : {suspect.adresse}"))
         elements.sort(key=lambda x: x[0])
         return elements
 
@@ -163,12 +165,12 @@ class Enquete:
         """
         pass
 
-    def enqueteResolue(self) -> str:
+    def enqueteResolue(self,idCoupable) -> str:
         """
         Change le statut d'une enquête en Classé, supprime l'instance et les données liées à cette enquete seront
         déplacées dans le dictionnaire "dictionnaireEnquetesResolues"
 
-
+        PRE : Identifiant du suspect qui a été désigné comme étant le coupable
         POST : Ajoute un dictionnaire contenant toutes les informations de l'enquête résolue à dict_global_enquetes_resolues,
                puis supprime cette instance.
 
@@ -176,6 +178,7 @@ class Enquete:
 
         self.statut="Classée/Résolue"
         self.priorite = 0
+        coupable =  [s.toDict() for s in self.suspects if s.idSuspect == idCoupable]
         infosEnquete = {
             "idEnquete" : self.idEnquete,
             "titre" : self.titre,
@@ -184,7 +187,7 @@ class Enquete:
             "lieu" : self.lieu,
             "priorite" : self.priorite,
             "preuves" : [p.toDict() for p in self.preuves],
-            "suspects" : [s.toDict() for s in self.suspects],
+            "coupable" : coupable,
         }
         Enquete.dictionnaireEnquetesResolues[f'Enquete n° {self.idEnquete}'] = infosEnquete
         retour = f"L'enquête {self.idEnquete} a bien été classé"
@@ -330,7 +333,23 @@ class Suspect(Personne):
         self.elementsIncriminants = []
         self.enqueteAssociee = None
 
+    def toDict(self) -> dict:
+        """
+        Convertit l'instance de Suspect en un dictionnaire.
 
+        POST : Retourne un dictionnaire contenant les informations du Suspect.
+        """
+        return {
+            "idSuspect": self.idSuspect,
+            "dateNaissance": self.dateNaissance.isoformat(),
+            "adresse": self.adresse,
+            "utilisateur": self.utilisateur,
+            "nationalite": self.nationalite,
+            "taille": self.taille,
+            "dateIncrimination": self.dateIncrimination.isoformat(),
+            "adn": self.adn,
+            "elementsIncriminants": self.elementsIncriminants,
+        }
     def listeElementsIncriminants(self, preuve):
         """
         remplit la liste des différents identifiants de preuves qui incriminent le suspect
@@ -433,23 +452,44 @@ test Unitaires qu'on peut prévoir :
 - tester tout les constructeurs 
 """
 
-# Petit Exemple D'utilisation
+# enquêteurs
+enqueteur1 = Enqueteur(idEnqueteur=1, mdp=123, nom="Sherlock Holmes", idPersonne=1, age=45, type="Enqueteur")
+enqueteur2 = Enqueteur(idEnqueteur=2, mdp=456, nom="Hercule Poirot", idPersonne=2, age=55, type="Enqueteur")
 
-enquete1 = Enquete(idEnquete=1, titre="Enquête A", lieu="Ville A", dateDebut=date(2023, 1, 1), priorite=15)
-preuve1 = Preuve(idPreuve=1, type='Sang/ADN', description='Sang Retrouvé sur la scène de crime', lieu='Scène de Crime',
-                 dateDecouverte=date(2023, 1, 1), utilisateur=5)
-preuve2 = Preuve(idPreuve=5, type='Témoignage',
-                 description='Témoignage qui dit que la victime et le suspect n° 4 ne se kiffaient pas de ouf',
-                 lieu='Voisinage Du suspect', dateDecouverte=date(2023, 4, 3), utilisateur=5)
+# enquêtes
+enquete1 = Enquete(idEnquete=1, titre="Affaire du collier", dateDebut=date(2023, 1, 1), lieu="Paris", priorite=1)
+enquete2 = Enquete(idEnquete=2, titre="Disparition mystérieuse", dateDebut=date(2023, 2, 1), lieu="Londres", priorite=2)
 
-enquete1.associerPreuve(preuve1)
+# preuves
+preuve1 = Preuve(idPreuve=1, type="Empreinte digitale", description="Empreinte sur le collier", lieu="Dressing", utilisateur=1, dateDecouverte=date(2023, 1, 5))
+preuve2 = Preuve(idPreuve=2, type="ADN", description="ADN sur la scène de crime", lieu="Salon", utilisateur=2, dateDecouverte=date(2023, 1, 7))
+preuve3 = Preuve(idPreuve=3, type="Témoignage", description="Témoin de la disparition", lieu="Place publique", utilisateur=1, dateDecouverte=date(2023, 2, 5))
+
+# suspects
+suspect1 = Suspect(idPersonne=3, idSuspect=1, nom="Monsieur X", dateNaissance=date(1980, 5, 10), age=43, type="Suspect",
+                   adresse="Rue de la République", utilisateur=1, nationalite="Française", taille="1m75", dateIncrimination=date(2023, 1, 8), adn="Matche avec l'ADN trouvé")
+suspect2 = Suspect(idPersonne=4, idSuspect=2, nom="Miss Y", dateNaissance=date(1990, 8, 15), age=32, type="Suspect",
+                   adresse="Baker Street", utilisateur=2, nationalite="Anglaise", taille="1m65", dateIncrimination=date(2023, 2, 8), adn="Aucun élément incriminant")
+
+
+
+# Ptits tests
+
 enquete1.associerPreuve(preuve2)
+enquete1.associerPreuve(preuve1)
 
-for i in enquete1.preuves:
-    print(f'{i.idPreuve} : {i.type} : {i.description} : {i.lieu}')
-
+enquete1.associerSuspect(suspect1)
 enquete1.creerFriseChrono()
 
-enquete1.enqueteResolue()
+enquete1.enqueteResolue(1)
+
+enquete2.associerPreuve(preuve3)
+enquete2.associerSuspect(suspect2)
+enquete2.creerFriseChrono()
+
+enquete2.enqueteResolue(2)
+
 
 print(Enquete.dictionnaireEnquetesResolues)
+
+
