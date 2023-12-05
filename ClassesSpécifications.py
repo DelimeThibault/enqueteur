@@ -1,3 +1,4 @@
+import sqlite3
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -182,7 +183,7 @@ class Enquete:
             "coupable" : coupable,
         }
         Enquete.dictionnaireEnquetesResolues[f'Enquete n° {self.idEnquete}'] = infosEnquete
-        retour = f"L'enquête {self.idEnquete} a bien été classé"
+        retour = f"L'enquête {self.idEnquete} a bien été classée"
         del self
         return retour
 
@@ -306,6 +307,7 @@ class Suspect(Personne):
     - enqueteAssociee (int) : l'enquete pour la quelle le suspect est suspecté
     - dateIncrimination (date) : date à la quelle l'humain est devenu suspect
     - adn (string) :
+    - recidive : est ce que le Suspect est déjà connu pour des crimes antérieurs
     - elementsIncriminants (list(instance de Preuve -> l'id d'une preuve)) : la ou les preuves qui incrimine ce suspect
 
 
@@ -323,6 +325,7 @@ class Suspect(Personne):
         self.dateIncrimination = dateIncrimination
         self.adn = adn
         self.elementsIncriminants = []
+        self.recidive = Suspect.recidive(self)
         self.enqueteAssociee = None
 
     def toDict(self) -> dict:
@@ -341,7 +344,54 @@ class Suspect(Personne):
             "dateIncrimination": self.dateIncrimination.isoformat(),
             "adn": self.adn,
             "elementsIncriminants": self.elementsIncriminants,
+            "récidive": self.recidive
         }
+
+    def recidive(self) -> bool:
+        """
+        fonction qui interroge une base de données (fictive/crée pour le programme)
+        qui contient le casier judiciaire de la population belge
+
+
+        POST : renvoie un booléen -> True si la personne a déjà commis une ou des infractions et False si totalement inconnu des services de police
+
+        """
+        connection = sqlite3.connect("D:\#5_LILIAN\#2_EPHEC\\2ième\Dev2\PROJET_ENQUETEURPRO\\CasierJudiciareSQlite.db")
+        curseur = connection.cursor()
+
+        id = (self.idPersonne,)
+        curseur.execute(
+            'SELECT description FROM Personnes as P JOIN Crimes as C ON P.idPersonne = C.idPersonne WHERE P.idPersonne == ?',
+            id)
+        resultat = curseur.fetchall()
+
+        connection.close()
+
+        return bool(resultat)
+
+    def casierJudiciaire(self) -> str:
+        """
+        fonction qui interroge une base de données (fictive/crée pour le programme)
+        qui contient le casier judiciaire de la population belge
+
+        POST : renvoie une phrase qui liste son casier judiciaire
+        """
+        connection = sqlite3.connect("D:\#5_LILIAN\#2_EPHEC\\2ième\Dev2\PROJET_ENQUETEURPRO\\CasierJudiciareSQlite.db")
+        curseur = connection.cursor()
+
+        id = (self,)
+        curseur.execute(
+            'SELECT idCrime,description FROM Personnes as P JOIN Crimes as C ON P.idPersonne = C.idPersonne WHERE P.idPersonne == ?',
+            id)
+        resultat = curseur.fetchall()
+        phrase = ''
+        for i in resultat:
+            phrase += f'Crime n°{i[0]} \nDescpription : {i[1]}\n\n'
+
+        connection.close()
+
+        return phrase
+
     def listeElementsIncriminants(self, preuve):
         """
         remplit la liste des différents identifiants de preuves qui incriminent le suspect
@@ -445,8 +495,8 @@ test Unitaires qu'on peut prévoir :
 """
 
 # enquêteurs
-enqueteur1 = Enqueteur(idEnqueteur=1, mdp=123, nom="Sherlock Holmes", idPersonne=1, age=45, type="Enqueteur")
-enqueteur2 = Enqueteur(idEnqueteur=2, mdp=456, nom="Hercule Poirot", idPersonne=2, age=55, type="Enqueteur")
+enqueteur1 = Enqueteur(idEnqueteur=1, mdp=123, nom="Sherlock Holmes", idPersonne=40, age=45, type="Enqueteur")
+enqueteur2 = Enqueteur(idEnqueteur=2, mdp=456, nom="Hercule Poirot", idPersonne=41, age=55, type="Enqueteur")
 
 # enquêtes
 enquete1 = Enquete(idEnquete=1, titre="Affaire du collier", dateDebut=date(2023, 1, 1), lieu="Paris", priorite=1)
@@ -458,9 +508,9 @@ preuve2 = Preuve(idPreuve=2, type="ADN", description="ADN sur la scène de crime
 preuve3 = Preuve(idPreuve=3, type="Témoignage", description="Témoin de la disparition", lieu="Place publique", utilisateur=1, dateDecouverte=date(2023, 2, 5))
 
 # suspects
-suspect1 = Suspect(idPersonne=3, idSuspect=1, nom="Monsieur X", dateNaissance=date(1980, 5, 10), age=43, type="Suspect",
+suspect1 = Suspect(idPersonne=3, idSuspect=1, nom="Johnson Michael", dateNaissance=date(1980, 5, 10), age=43, type="Suspect",
                    adresse="Rue de la République", utilisateur=1, nationalite="Française", taille="1m75", dateIncrimination=date(2023, 1, 8), adn="Matche avec l'ADN trouvé")
-suspect2 = Suspect(idPersonne=4, idSuspect=2, nom="Miss Y", dateNaissance=date(1990, 8, 15), age=32, type="Suspect",
+suspect2 = Suspect(idPersonne=4, idSuspect=2, nom="Brown Emily", dateNaissance=date(1990, 8, 15), age=32, type="Suspect",
                    adresse="Baker Street", utilisateur=2, nationalite="Anglaise", taille="1m65", dateIncrimination=date(2023, 2, 8), adn="Aucun élément incriminant")
 
 
