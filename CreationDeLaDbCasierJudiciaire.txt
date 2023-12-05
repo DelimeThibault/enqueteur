@@ -1,0 +1,128 @@
+créer une base de donnée (Casier Judiciaire) toute simple qui contient 2 tableaux: 
+- 1 tableau personnes 
+- 1 tableau Crimes
+
+Le tableau personnes contient comme attribut :
+- un identifiant unique pour chaque personne (PK) qui devra être le même que celui de l'attribut idPersonne dans la classe personne du projet
+- le nom de la personne 
+- le prénom de la personne 
+- la date de naissance de la personne 
+
+Le tableau Crimes contient comme attribut : 
+- un identifiant de crime unique (PK) 
+- l'identidiant de la personne qui a commis le crime, qui peut être reprise plusieurs fois si la même personne a commis plusieurs crimes (FK vers PK de Personnes) 
+- Une description du crime qu'il a commis 
+- éventuellement plus d'attributs si besoin 
+
+# SQL
+
+CREATE DATABASE 'D:\#5_LILIAN\#2_EPHEC\2ième\Dev2\PROJET_ENQUETEURPRO\CasierJudiciare.db' LOG ON 'CasierJudiciare.log' COLLATION 'UTF8BIN' NCHAR COLLATION 'UTF8BIN';
+
+1ère table personne
+
+CREATE TABLE Personnes (
+    idPersonne INTEGER NOT NULL DEFAULT AUTOINCREMENT,
+    nom varchar(40) NOT NULL,
+    prenom varchar(40) NOT NULL,
+    naissance DATE NOT NULL,
+    CONSTRAINT pk_Personnes PRIMARY KEY (idPersonne)
+);
+
+CREATE TABLE Crimes (
+    idCrime INTEGER NOT NULL DEFAULT AUTOINCREMENT,
+    description long varchar NOT NULL,
+    idPersonne INTEGER NOT NULL,
+    CONSTRAINT pk_Crimes PRIMARY KEY (idCrime),
+    CONSTRAINT fkPersCrime FOREIGN KEY (idPersonne) REFERENCES Personnes (idPersonne) on update restrict on delete restrict
+
+);
+
+
+# Remplir les Tableaux avec pleins de données
+
+INSERT INTO Personnes (nom, prenom, naissance) VALUES
+('Doe', 'John', '1990-05-15'),
+('Smith', 'Alice', '1985-02-28'),
+('Johnson', 'Michael', '1978-09-10'),
+('Brown', 'Emily', '1995-11-03'),
+('Jones', 'Christopher', '1982-07-22'),
+('Miller', 'Sophia', '1998-04-18'),
+('Davis', 'Matthew', '1973-12-08'),
+('Garcia', 'Olivia', '1987-06-25'),
+('Rodriguez', 'Daniel', '1992-01-14'),
+('Martinez', 'Emma', '1980-03-30'),
+('Hernandez', 'David', '1997-08-12'),
+('Jackson', 'Ava', '1975-10-05'),
+('White', 'William', '1989-04-20'),
+('Taylor', 'Ella', '1993-07-17'),
+('Anderson', 'James', '1984-02-09'),
+('Thomas', 'Mia', '1996-09-28'),
+('Moore', 'Alexander', '1979-11-11'),
+('Martin', 'Grace', '1991-06-03'),
+('Lee', 'Ryan', '1986-01-26'),
+('Walker', 'Lily', '1983-08-19'),
+('Dubois', 'Jean', '1990-03-15'),
+('Martin', 'Sophie', '1985-06-22'),
+('Lefevre', 'Pierre', '1978-11-10'),
+('Dupont', 'Isabelle', '1995-04-28'),
+('Bertrand', 'François', '1980-09-17'),
+('Leroux', 'Catherine', '1992-02-03'),
+('Rousseau', 'Nicolas', '1987-07-12'),
+('Fournier', 'Marie', '1975-12-19'),
+('Leclerc', 'Luc', '1998-05-06'),
+('Girard', 'Aurélie', '1983-10-24'),
+('Moreau', 'Thierry', '1991-01-31'),
+('Gagnon', 'Émilie', '1970-08-08'),
+('Caron', 'Alexandre', '1989-06-15'),
+('Picard', 'Caroline', '1982-03-29'),
+('Lavoie', 'Mathieu', '1996-09-05');
+
+
+INSERT INTO Crimes (description, idPersonne) VALUES
+('Vol à main armée dans une bijouterie, jugement rendu : 10 ans de prison ferme.', 1),
+('Fraude fiscale d''envergure, jugement rendu : 5 ans de prison et restitution financière.', 3),
+('Homicide involontaire par conduite en état d''ivresse, jugement rendu : 8 ans de prison.', 5),
+('Escroquerie à la carte de crédit, jugement rendu : 3 ans de prison et amende significative.', 7),
+('Enlèvement avec demande de rançon, jugement rendu : 15 ans de prison ferme.', 9),
+('Blanchiment d''argent, jugement rendu : 7 ans de prison et confiscation des biens.', 11),
+('Vol de données informatiques, jugement rendu : 4 ans de prison et interdiction d''accès à internet.', 13),
+('Violence domestique, jugement rendu : 2 ans de prison avec suivi psychologique obligatoire.', 15),
+('Trafic de drogue international, jugement rendu : 12 ans de prison et lourde amende.', 17),
+('Vol qualifié dans un casino, jugement rendu : 6 ans de prison et obligation de rembourser le butin.', 19),
+('Fraude académique, jugement rendu : 1 an de prison avec sursis et travaux d''intérêt général.', 2),
+('Incendie criminel, jugement rendu : 9 ans de prison et indemnisation des victimes.', 4),
+('Attaque à main armée d''une banque, jugement rendu : 14 ans de prison et confiscation des armes.', 6),
+('Détournement de fonds publics, jugement rendu : 8 ans de prison et remboursement des sommes.', 8),
+('Kidnapping suivi de libération contre rançon, jugement rendu : 20 ans de prison ferme.', 10),
+('Contrefaçon de produits de luxe, jugement rendu : 5 ans de prison et lourde amende.', 12),
+('Harcèlement sexuel, jugement rendu : 3 ans de prison et inscription au registre des délinquants sexuels.', 14),
+('Atteinte à la vie privée par piratage informatique, jugement rendu : 6 ans de prison.', 16),
+('Tentative de meurtre sur agent de police, jugement rendu : 15 ans de prison ferme.', 18),
+('Recel de biens volés, jugement rendu : 4 ans de prison et obligation de restitution.', 20),
+('Vol à main armée dans une grande surface, jugement rendu : 12 ans de prison ferme.', 3),
+('Fraude informatique massive, jugement rendu : 7 ans de prison et restitution des dommages.', 5),
+('Meurtre par empoisonnement, jugement rendu : peine de réclusion à perpétuité sans possibilité de libération conditionnelle.', 7),
+('Escroquerie à l''assurance-vie, jugement rendu : 10 ans de prison et remboursement des compagnies d''assurance.', 9),
+('Séquestration en série, jugement rendu : 18 ans de prison ferme et suivi psychologique obligatoire.', 11),
+('Blanchiment d''argent à l''échelle internationale, jugement rendu : 15 ans de prison et confiscation des avoirs.', 13),
+('Atteinte à la sécurité nationale par piratage informatique, jugement rendu : 20 ans de prison et surveillance constante.', 15),
+('Viol en réunion, jugement rendu : 8 ans de prison avec inscription au registre des délinquants sexuels.', 17),
+('Trafic de drogue sur le dark web, jugement rendu : 14 ans de prison et amende record.', 19),
+('Enlèvement suivi de libération contre rançon, jugement rendu : 25 ans de prison ferme.', 2),
+('Extorsion de personnalités publiques, jugement rendu : 9 ans de prison et interdiction de contact avec les victimes.', 4),
+('Falsification de preuves criminelles, jugement rendu : 6 ans de prison et interdiction d''exercer dans le domaine juridique.', 6),
+('Violences physiques graves en manifestation, jugement rendu : 7 ans de prison et réparation des dommages.', 8),
+('Kidnapping avec sévices, jugement rendu : 30 ans de prison ferme et ordre de non-approche des victimes.', 10),
+('Contrefaçon de médicaments, jugement rendu : 5 ans de prison et indemnisation des personnes affectées.', 12),
+('Atteinte à la vie privée par diffusion non autorisée de vidéos intimes, jugement rendu : 12 ans de prison.', 14),
+('Attaque terroriste sur une infrastructure critique, jugement rendu : peine de réclusion à perpétuité.', 16),
+('Tentative d''assassinat sur un homme politique, jugement rendu : 20 ans de prison et surveillance constante.', 18),
+('Enlèvement d''un mineur à des fins de trafic, jugement rendu : 35 ans de prison ferme.', 20);
+
+
+
+# Créer des procédures
+
+
+# Serveurs
+SA12
