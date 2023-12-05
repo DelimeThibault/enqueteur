@@ -118,11 +118,3 @@ INSERT INTO Crimes (description, idPersonne) VALUES
 ('Attaque terroriste sur une infrastructure critique, jugement rendu : peine de réclusion à perpétuité.', 16),
 ('Tentative d''assassinat sur un homme politique, jugement rendu : 20 ans de prison et surveillance constante.', 18),
 ('Enlèvement d''un mineur à des fins de trafic, jugement rendu : 35 ans de prison ferme.', 20);
-
-
-
-# Créer des procédures
-
-
-# Serveurs
-SA12
