@@ -38,7 +38,7 @@ class Enquete:
 
         PRE : idEnquete et priorité doivent être des entiers
               titre,statut et lieu doivent être des chaînes de caractères
-        POST : Une Enquête a été crée
+        POST : Une Enquête a été crée de paramètre ci-dessus
         RAISE : ValueError si idEnquete ou priorite ne sont pas des entiers positifs
                 ValueError si titre,statut ou lieu sont des chaînes vides
                 TypeError si date n'est pas une instance de datetime.date
@@ -67,8 +67,8 @@ class Enquete:
         Ajoute des Preuves liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
 
-        PRE : /
-        POST : La preuve a été ajoutée à la liste des preuves de l'enquête
+        PRE : preuve, instance de la classe Preuve
+        POST : modifie la liste des preuves de l'enquête en ajoutant preuve
         RAISE : TypeError Si la preuve n'est pas une instance de Preuve
         """
         if not isinstance(preuve, Preuve):
@@ -82,8 +82,8 @@ class Enquete:
         Ajoute des Suspects liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
 
-        PRE : /
-        POST : Le suspect a été ajoutée à la liste des suspects de l'enquête
+        PRE : suspect, instance de la classe Suspect
+        POST : modifie la liste des suspects de l'enquête en ajoutant suspect
         RAISE : TypeError Si le suspect n'est pas une instance de Suspect
                """
 
@@ -98,7 +98,7 @@ class Enquete:
         Modifie les informations de l'enquête.
 
         PRE :
-        POST :
+        POST : modifie les informations de enquete
         """
         pass
 
@@ -107,7 +107,7 @@ class Enquete:
         Supprime les informations de l'enquête.
 
         PRE :
-        POST :
+        POST :  supprime les informations de enquete
         """
 
         pass
@@ -163,8 +163,8 @@ class Enquete:
         Change le statut d'une enquête en Classé, supprime l'instance et les données liées à cette enquete seront
         déplacées dans le dictionnaire "dictionnaireEnquetesResolues"
 
-        PRE : Identifiant du suspect qui a été désigné comme étant le coupable
-        POST : Ajoute un dictionnaire contenant toutes les informations de l'enquête résolue à dict_global_enquetes_resolues,
+        PRE : idCoupable, Identifiant du suspect qui a été désigné comme étant le coupable
+        POST : Retourne un message comme quoi l'enquete a été classé et Ajoute un dictionnaire contenant toutes les informations de l'enquête résolue à dict_global_enquetes_resolues,
                puis supprime cette instance.
 
         """
@@ -295,7 +295,7 @@ class Suspect(Personne):
     """
     Classe représentant un suspect qui est lié a une enquête en cours
 
-    Attributs :
+    PRE : 
     - attributs hérités de Personne ( nom , age, idPersonne, type )
     - idSuspect (int) : Identifiant du suspect
     - nom (string) : le nom du suspect
@@ -310,11 +310,23 @@ class Suspect(Personne):
     - recidive : est ce que le Suspect est déjà connu pour des crimes antérieurs
     - elementsIncriminants (list(instance de Preuve -> l'id d'une preuve)) : la ou les preuves qui incrimine ce suspect
 
+    POST: Suspect est crée de parametre ci dessus.
+    RAISES: si un paramètre n'est pas du type attendu
+
 
     """
 
     def __init__(self, idPersonne: int, idSuspect: int, nom: str, dateNaissance: date, age: int, type: str,
                  adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: date, adn: str):
+
+        if idSuspect <= 0 or utilisateur <= 0 or age <= O:
+            raise ValueError("idPreuve et utilisateur doivent être des entiers positifs.")
+
+        if not all((nationalite, adn, taille, adresse)):
+            raise ValueError("type, description, lieu ne doivent pas être des chaînes vides.")
+
+        if not isinstance(dateIncrimination):
+            raise TypeError("dateDecouverte doit être une instance de la classe date.")
         super().__init__(idPersonne, nom, age, type)
         self.idSuspect = idSuspect
         self.dateNaissance = dateNaissance
