@@ -20,7 +20,7 @@ class Preuve:
 
         PRE :    idPreuve, utilisateur doivent être des entiers
                  type, description, lieu ne doivent pas être des chaînes vides
-        POST :   Une Preuve a été crée
+        POST :   Une Preuve a été crée avec ses attributs idPreuve, type, description, lieu, utilisateur, dateDecouverte qui prendront la valeur de ce qui a été passé en paramètre
         RAISES : ValueError si idPreuve, utilisateur ne sont pas des entiers positifs.
                  ValueError si type, description, lieu sont des chaînes vides.
                  TypeError si dateDecouverte n'est pas une instance de la classe date.
