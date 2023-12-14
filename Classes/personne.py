@@ -11,6 +11,7 @@ class Personne:
 
     def __init__(self, idPersonne: int, nom: str, age: int, fonction: str):
         """
+        Auteur : Thibault 
         Crée une instance de la classe Personne
 
         PRE : idPersonne doit être un entier, une personne doit etre soit suspect soit enqueteur
