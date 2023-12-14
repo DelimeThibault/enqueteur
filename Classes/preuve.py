@@ -16,6 +16,7 @@ class Preuve:
 
     def __init__(self, idPreuve: int, type: str, description: str, lieu: str, utilisateur: int, dateDecouverte: date):
         """
+        Auteur : Lilian
         Initialise une instance de la classe Preuve.
 
         PRE :    idPreuve, utilisateur doivent être des entiers
@@ -47,6 +48,7 @@ class Preuve:
     def modifierPreuve(self, nouveau_type: str, nouvelle_description: str, nouveau_lieu: str, nouvel_utilisateur: int,
                        nouvelle_dateDecouverte: date):
         """
+        Auteur : Léon 
         Modifie les attributs de l'instance courante de Preuve.
 
         PRE :    Les mêmes contraintes que pour le constructeur s'appliquent.
@@ -68,6 +70,7 @@ class Preuve:
 
     def supprimerPreuve(self):
         """
+        Auteur : Thibaud
         Marque la preuve comme supprimée.
 
         POST : L'attribut 'supprime' de l'instance est mis à True.
@@ -76,6 +79,7 @@ class Preuve:
 
     def toDict(self) -> dict:
         """
+        Auteur : Lilian
         Convertit l'instance de Preuve en un dictionnaire.
 
         PRE : l'instance de la preuve doit être une instance valide, avec chacun de ses attributs correspondant au type exigé
