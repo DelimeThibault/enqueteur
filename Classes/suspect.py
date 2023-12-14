@@ -23,6 +23,7 @@ class Suspect(Personne):
     def __init__(self, idPersonne: int, idSuspect: int, nom: str, dateNaissance: date, age: int, fonction: str,
                  adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: date, adn: str):
          """
+         Auteur : Léon 
          Constructeur d'objet Suspect héritant de la classe Personne
 
          PRE: idSuspect et utilisateur doivent être des entiers
@@ -56,8 +57,9 @@ class Suspect(Personne):
 
     def toDict(self) -> dict:
         """
+        Auteur : Lilian
         Convertit l'instance de Suspect en un dictionnaire.
-
+        PRE : l'instance de la preuve doit être une instance valide, avec chacun de ses attributs correspondant au type exigé
         POST : Retourne un dictionnaire contenant les informations du Suspect.
         """
         return {
@@ -74,6 +76,7 @@ class Suspect(Personne):
 
     def casierJudiciaire(self) -> str:
         """
+        Auteur : Léon
         fonction qui interroge une base de données (fictive/crée pour le programme)
         qui contient le casier judiciaire de la population belge
 
@@ -97,6 +100,7 @@ class Suspect(Personne):
 
     def listeElementsIncriminants(self, preuve):
         """
+        Auteur : Lilian
         remplit la liste des différents identifiants de preuves qui incriminent le suspect
 
         PRE : preuve doit être une instnace de preuve
