@@ -14,7 +14,7 @@ class Personne:
         Crée une instance de la classe Personne
 
         PRE : idPersonne doit être un entier, une personne doit etre soit suspect soit enqueteur
-        POST : Une Personne a été crée
+        POST : Une Personne a été crée avec ses attributs idPersonne, nom, age, fonction qui prendront la valeur de ce qui a été passé en paramètre
         RAISE :
         """
 
