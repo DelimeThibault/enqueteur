@@ -13,6 +13,7 @@ class Enqueteur(Personne):
 
     def __init__(self, idPersonne: int, nom: str, age: int, idEnqueteur: int, grade: str, fonction: str):
         """
+        Auteur : Thibault
         Crée une instance de la classe Enquteur
 
         PRE : idEnquteur doit être un entier, mdp doit etre un entier
@@ -26,8 +27,10 @@ class Enqueteur(Personne):
 
     def toDict(self) -> dict:
         """
+        Auteur : Thibault
         Convertit l'instance de Enqueteur en un dictionnaire.
-
+        
+        PRE : l'instance de la preuve doit être une instance valide, avec chacun de ses attributs correspondant au type exigé
         POST : Retourne un dictionnaire contenant les informations de l'enquêteur
         """
         return {
@@ -40,6 +43,7 @@ class Enqueteur(Personne):
 
     def assignerEnquete(self, enquete) -> None:
         """
+        Auteur :Thibault
         Assigner une enquête à l'enquêteur.
 
         PRE : enquete: Instance de la classe Enquete à assigner.
@@ -49,6 +53,7 @@ class Enqueteur(Personne):
 
     def modifierEnqueteur(self, nouveau_nom: str, nouvel_age: int, nouveau_grade: str) -> None:
         """
+        Auteur : Thibault
         Modifie les informations de l'enquêteur.
 
         PRE : nouveau_nom doit être une chaîne, nouvel_age un entier, nouveau_grade une chaîne.
@@ -60,6 +65,7 @@ class Enqueteur(Personne):
 
     def SupprimerEnqueteur(self) -> None:
         """
+        Auteur :Thibault
         Marque l'enquêteur comme supprimé.
 
         POST : L'enquêteur est marqué comme supprimé.
