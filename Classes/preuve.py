@@ -78,6 +78,7 @@ class Preuve:
         """
         Convertit l'instance de Preuve en un dictionnaire.
 
+        PRE : l'instance de la preuve doit être une instance valide, avec chacun de ses attributs correspondant au type exigé
         POST : Retourne un dictionnaire contenant les informations de la preuve.
         """
         return {
