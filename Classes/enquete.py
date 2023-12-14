@@ -26,7 +26,7 @@ class Enquete:
 
         PRE : idEnquete et priorité doivent être des entiers
               titre,statut et lieu doivent être des chaînes de caractères
-        POST : Une Enquête a été crée
+        POST : Une Enquête a été crée avec ses attributs idEnquete, titre, dateDebut, lieu, priorite qui prendront la valeur de ce qui a été passé en paramètre
         RAISE : ValueError si idEnquete ou priorite ne sont pas des entiers positifs
                 ValueError si titre,statut ou lieu sont des chaînes vides
                 TypeError si date n'est pas une instance de datetime.date
