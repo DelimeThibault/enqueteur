@@ -13,10 +13,10 @@ class Enqueteur(Personne):
 
     def __init__(self, idPersonne: int, nom: str, age: int, idEnqueteur: int, grade: str, fonction: str):
         """
-                Crée une instance de la classe Enquteur
+        Crée une instance de la classe Enquteur
 
-                PRE : idEnquteur doit être un entier, mdp doit etre un entier
-                POST : Un enquteur a été crée
+        PRE : idEnquteur doit être un entier, mdp doit etre un entier
+        POST : Un enquteur a été crée avec ses attributs idEnqueteur, grade, enquetesAssignees qui prendront la valeur de ce qui a été passé en paramètre
                 """
         super().__init__(idPersonne, nom, age, fonction)
         self.idEnqueteur = idEnqueteur
