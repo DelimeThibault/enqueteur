@@ -22,6 +22,26 @@ class Suspect(Personne):
 
     def __init__(self, idPersonne: int, idSuspect: int, nom: str, dateNaissance: date, age: int, fonction: str,
                  adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: date, adn: str):
+         """
+         Constructeur d'objet Suspect héritant de la classe Personne
+
+         PRE: idSuspect et utilisateur doivent être des entiers
+         POST: Un Suspect est crée avec ses attributs idSuspect, dateNaissance, addresse, utilisateur, nationalite, taille, dateIncrimination,adn qui prendront la valeur de ce qui a été passé en paramètre
+         RAISES: Si idSuspect ou utilisateur sont négatifs -> ValueError
+                 Si nationalité, adn, taille, addresse sont des chaînes vides -> ValueError
+                 Si dateIncrimination n'est pas une instance de la classe date -> TypeError
+         
+         
+         """
+                     
+        if idSuspect <= 0 or utilisateur <= 0 or age <= O:
+            raise ValueError("idPreuve et utilisateur doivent être des entiers positifs.")
+
+        if not all((nationalite, adn, taille, adresse)):
+            raise ValueError("type, description, lieu ne doivent pas être des chaînes vides.")
+
+        if not isinstance(dateIncrimination):
+            raise TypeError("dateDecouverte doit être une instance de la classe date.")
         super().__init__(idPersonne, nom, age, fonction)
         self.idSuspect = idSuspect
         self.dateNaissance = dateNaissance
