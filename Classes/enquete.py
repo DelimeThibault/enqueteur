@@ -55,7 +55,8 @@ class Enquete:
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
 
         PRE : /
-        POST : La preuve a été ajoutée à la liste des preuves de l'enquête
+        POST : La preuve a été ajoutée à la liste des preuves de l'enquête et la valeur de 
+               l'attribut enqueteAssociee prend la valeur de l'idEnquete
         RAISE : TypeError Si la preuve n'est pas une instance de Preuve
         """
         if not isinstance(preuve, Preuve):
@@ -118,6 +119,10 @@ class Enquete:
     def elementsFrise(self) -> List[Tuple]:
         """
         Récupère les différents éléments importants pour pouvoir les afficher dans une frise chronologique
+        éléments importants : 
+        Enquete : dateDebut, titre et le lieu 
+        Preuve : dateDeDecouverte, idPreuve, lieu et le type de preuve 
+        Suspect : dateIncrimination, idSuspect, nom, adresse
 
         PRE : /
         POST : retourne un tableau constitué de tuples avec les différentes informations qui ont été récupérées dans la liste des suspects et la liste des preuves
@@ -145,12 +150,11 @@ class Enquete:
 
     def enqueteResolue(self, idCoupable: int) -> str:
         """
-        Change le statut d'une enquête en Classé, supprime l'instance et les données liées à cette enquete seront
-        déplacées dans le dictionnaire "dictionnaireEnquetesResolues"
+        Permet de cloturer une enquête qui est considérée comme résolue
 
         PRE : Identifiant du suspect qui a été désigné comme étant le coupable
-        POST : Ajoute un dictionnaire contenant toutes les informations de l'enquête résolue à dict_global_enquetes_resolues,
-               puis supprime cette instance.
+        POST : Ajoute un dictionnaire contenant toutes les informations de l'enquête résolue à un dictionnaire "dictionnaireEnquetesResolues",
+               change l'attribut statut en classée/Résolue, change l'attribut priorité en 0 et puis supprime cette instance.
 
         """
         self.statut = "Classée/Résolue"
@@ -179,7 +183,7 @@ class Enquete:
         """
         Localise les lieux ou ont été trouvés les preuves liées à l'enquête
 
-        PRE : Encodage du lieux ou a été trouvé la preuve
+        PRE : /
         POST : Retourne l'addresse des lieux ou on été trouvé la preuve
         """
         pass
