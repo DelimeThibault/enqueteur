@@ -22,6 +22,7 @@ class Enquete:
     def __init__(self, idEnquete: int, titre: str, dateDebut: date, lieu: str, priorite: int,
                  statut: str = 'En cours') -> None:
         """
+        Auteur : Lilian 
         Initialise une instance de la classe Enquete.
 
         PRE : idEnquete et priorité doivent être des entiers
@@ -51,6 +52,7 @@ class Enquete:
 
     def associerPreuve(self, preuve) -> None:
         """
+        Auteur : Léon 
         Ajoute des Preuves liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
 
@@ -67,6 +69,7 @@ class Enquete:
 
     def associerSuspect(self, suspect) -> None:
         """
+        Auteur : Léon
         Ajoute des Suspects liées à l'enquête.
         Modifie l'attribut enqueteAssociee pour être l'idEnquete
 
@@ -84,6 +87,7 @@ class Enquete:
     def modifierInformations(self, titre: str = None, dateDebut: date = None,
                              statut: str = None, lieu: str = None, priorite: int = None) -> None:
         """
+        Auteur : Léon 
         Modifie les informations de l'enquête.
 
         PRE :
@@ -102,6 +106,7 @@ class Enquete:
 
     def supprimerInformations(self) -> None:
         """
+        Auteur : Léon
         Supprime les informations de l'enquête.
 
         PRE :
@@ -118,6 +123,7 @@ class Enquete:
 
     def elementsFrise(self) -> List[Tuple]:
         """
+        Auteur : Lilian 
         Récupère les différents éléments importants pour pouvoir les afficher dans une frise chronologique
         éléments importants : 
         Enquete : dateDebut, titre et le lieu 
@@ -140,6 +146,7 @@ class Enquete:
 
     def creerFriseChrono(self) -> None:
         """
+        Auteur : Léon 
         Crée une frise chronologique pour l'enquête avec les différents éléments
         repertoriés au cours du temps ( découverte d'une preuve, nouveau suspect, etc...)
 
@@ -150,6 +157,7 @@ class Enquete:
 
     def enqueteResolue(self, idCoupable: int) -> str:
         """
+        Auteur : Lilian
         Permet de cloturer une enquête qui est considérée comme résolue
 
         PRE : Identifiant du suspect qui a été désigné comme étant le coupable
@@ -181,6 +189,7 @@ class Enquete:
 
     def localiserLieuxPreuves(self) -> str:
         """
+        Auteur : Thibault
         Localise les lieux ou ont été trouvés les preuves liées à l'enquête
 
         PRE : /
@@ -189,7 +198,9 @@ class Enquete:
         pass
 
     def localiseAddresseSuspects(self) -> str:
-        """Localise les différents suspects grâce à leur addresses
+        """
+        Auteur : Thibault
+        Localise les différents suspects grâce à leur addresses
 
         PRE : /
         POST : Retourne l'addresse du suspect
