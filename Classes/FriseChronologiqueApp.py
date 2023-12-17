@@ -9,7 +9,7 @@ class FriseChronologiqueApp(App):
 
     def __init__(self, enquete, **kwargs):
         """
-        Auteur : Thibault
+        Auteur : Léon
         Initialise une instance de la classe FriseChronologiqueApp
         PRE : enquete doit être une instance de la classe Enquete
         POST :  Une instance de la classe FriseChronologiqueApp a été créée.
@@ -19,7 +19,7 @@ class FriseChronologiqueApp(App):
 
     def build(self):
         """
-        Auteur: Thibault
+        Auteur: Léon
         Construit l'interface utilisateur de l'application
         PRE: /
         POST : Retourne un widget représentant l'interface utilisateur
