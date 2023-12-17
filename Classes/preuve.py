@@ -16,7 +16,7 @@ class Preuve:
 
     def __init__(self, idPreuve: int, type: str, description: str, lieu: str, utilisateur: int, dateDecouverte: date):
         """
-        Auteur : Lilian
+        Auteur : Léon
         Initialise une instance de la classe Preuve.
 
         PRE :    idPreuve, utilisateur doivent être des entiers
@@ -47,14 +47,7 @@ class Preuve:
 
     def modifierPreuve(self, nouveau_type: str, nouvelle_description: str, nouveau_lieu: str, nouvel_utilisateur: int,
                        nouvelle_dateDecouverte: date):
-        """
-        Auteur : Léon 
-        Modifie les attributs de l'instance courante de Preuve.
-
-        PRE :    Les mêmes contraintes que pour le constructeur s'appliquent.
-        POST :   Les attributs de l'instance sont mis à jour.
-        RAISES : Les mêmes exceptions que pour le constructeur.
-        """
+        
         if not all(isinstance(arg, str) and arg for arg in (nouveau_type, nouvelle_description, nouveau_lieu)):
             raise ValueError("type, description, lieu ne doivent pas être des chaînes vides.")
         if not isinstance(nouvel_utilisateur, int) or nouvel_utilisateur <= 0:
@@ -69,17 +62,12 @@ class Preuve:
         self.dateDecouverte = nouvelle_dateDecouverte
 
     def supprimerPreuve(self):
-        """
-        Auteur : Thibaud
-        Marque la preuve comme supprimée.
-
-        POST : L'attribut 'supprime' de l'instance est mis à True.
-        """
+        
         self.supprime = True
 
     def toDict(self) -> dict:
         """
-        Auteur : Lilian
+        Auteur : Léon
         Convertit l'instance de Preuve en un dictionnaire.
 
         PRE : l'instance de la preuve doit être une instance valide, avec chacun de ses attributs correspondant au type exigé
