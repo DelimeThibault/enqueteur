@@ -57,7 +57,7 @@ class Suspect(Personne):
 
     def toDict(self) -> dict:
         """
-        Auteur : Lilian
+        Auteur : Léon
         Convertit l'instance de Suspect en un dictionnaire.
         PRE : l'instance de la preuve doit être une instance valide, avec chacun de ses attributs correspondant au type exigé
         POST : Retourne un dictionnaire contenant les informations du Suspect.
@@ -100,7 +100,7 @@ class Suspect(Personne):
 
     def listeElementsIncriminants(self, preuve):
         """
-        Auteur : Lilian
+        Auteur : Léon
         remplit la liste des différents identifiants de preuves qui incriminent le suspect
 
         PRE : preuve doit être une instnace de preuve
