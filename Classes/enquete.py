@@ -22,7 +22,7 @@ class Enquete:
     def __init__(self, idEnquete: int, titre: str, dateDebut: date, lieu: str, priorite: int,
                  statut: str = 'En cours') -> None:
         """
-        Auteur : Lilian 
+        Auteur : Thibault 
         Initialise une instance de la classe Enquete.
 
         PRE : idEnquete et priorité doivent être des entiers
@@ -86,13 +86,7 @@ class Enquete:
 
     def modifierInformations(self, titre: str = None, dateDebut: date = None,
                              statut: str = None, lieu: str = None, priorite: int = None) -> None:
-        """
-        Auteur : Léon 
-        Modifie les informations de l'enquête.
-
-        PRE :
-        POST :
-        """
+      
         if titre is not None:
             self.titre = titre
         if dateDebut is not None:
@@ -105,13 +99,7 @@ class Enquete:
             self.priorite = priorite
 
     def supprimerInformations(self) -> None:
-        """
-        Auteur : Léon
-        Supprime les informations de l'enquête.
-
-        PRE :
-        POST :
-        """
+    
         self.idEnquete = None
         self.titre = None
         self.dateDebut = None
@@ -123,7 +111,7 @@ class Enquete:
 
     def elementsFrise(self) -> List[Tuple]:
         """
-        Auteur : Lilian 
+        Auteur : Thibault 
         Récupère les différents éléments importants pour pouvoir les afficher dans une frise chronologique
         éléments importants : 
         Enquete : dateDebut, titre et le lieu 
@@ -157,7 +145,7 @@ class Enquete:
 
     def enqueteResolue(self, idCoupable: int) -> str:
         """
-        Auteur : Lilian
+        Auteur : Thibault
         Permet de cloturer une enquête qui est considérée comme résolue
 
         PRE : Identifiant du suspect qui a été désigné comme étant le coupable
