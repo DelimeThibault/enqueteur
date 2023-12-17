@@ -52,22 +52,11 @@ class Enqueteur(Personne):
             self.enquetesAssignees.append(enquete)
 
     def modifierEnqueteur(self, nouveau_nom: str, nouvel_age: int, nouveau_grade: str) -> None:
-        """
-        Auteur : Thibault
-        Modifie les informations de l'enquêteur.
-
-        PRE : nouveau_nom doit être une chaîne, nouvel_age un entier, nouveau_grade une chaîne.
-        POST : Les données de l'enquêteur ont été modifiées.
-        """
+        
         self.nom = nouveau_nom
         self.age = nouvel_age
         self.grade = nouveau_grade
 
     def SupprimerEnqueteur(self) -> None:
-        """
-        Auteur :Thibault
-        Marque l'enquêteur comme supprimé.
-
-        POST : L'enquêteur est marqué comme supprimé.
-        """
+        
         self.estSupprime = True
