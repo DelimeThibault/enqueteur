@@ -93,7 +93,28 @@ class TestPreuve(unittest.TestCase):
         date_test = datetime.now()
         preuve = Preuve(1, "ADN", "Description", "Lieu", 123, date_test)
         preuve_dict = preuve.toDict()
+
         self.assertEqual(preuve_dict["idPreuve"], 1, "toDict : idPreuve")
+        self.assertEqual(preuve_dict["type"], "ADN", "toDict : type")
+        self.assertEqual(preuve_dict["description"], "Description", "toDict : description")
+        self.assertEqual(preuve_dict["lieu"], "Lieu", "toDict : lieu")
+        self.assertEqual(preuve_dict["utilisateur"], 123, "toDict : utilisateur")
+        self.assertEqual(preuve_dict["dateDecouverte"], date_test, "toDict : dateDecouverte")
+
+        # test en associant une enquete
+        date_test = datetime(2020, 1, 1)
+        preuve1 = Preuve(2, "Empreinte", "Autre Description", "Autre Lieu", 456, date_test)
+        enquete = Enquete(10, "Enquête Test", date_test, "Lieu Fictif", 5)
+        preuve1.enqueteAssociee = enquete
+
+        preuve_dict = preuve1.toDict()
+        self.assertEqual(preuve_dict["idPreuve"], 2, "toDict : idPreuve")
+        self.assertEqual(preuve_dict["type"], "Empreinte", "toDict : type")
+        self.assertEqual(preuve_dict["description"], "Autre Description", "toDict : description")
+        self.assertEqual(preuve_dict["lieu"], "Autre Lieu", "toDict : lieu")
+        self.assertEqual(preuve_dict["utilisateur"], 456, "toDict : utilisateur")
+        self.assertEqual(preuve_dict["dateDecouverte"], date_test, "toDict : dateDecouverte")
+        self.assertEqual(preuve_dict["enqueteAssociee"], 10, "toDict : enqueteAssociee")
 
 
 class TestSuspect(unittest.TestCase):
