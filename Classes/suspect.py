@@ -72,6 +72,8 @@ class Suspect(Personne):
             raise ValueError(
                 "nom, prenom, fonction, adresse, nationalite, taille, et adn ne doivent pas être des chaînes vides.")
 
+        if self.supprimer == True :
+            raise ValueError("Impossible De modifier une preuve supprimée ")
 
 
         self.nom = nouveau_nom
