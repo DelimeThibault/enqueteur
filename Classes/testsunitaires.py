@@ -47,22 +47,35 @@ class TestPreuve(unittest.TestCase):
         date_test = datetime.now()
 
         nouvelle_date = datetime(2022, 7, 14)
-        # Test modification valide
+        # Test valide
         preuve = Preuve(1, "ADN", "Description", "Lieu", 123, date_test)
         preuve.modifierPreuve("Empreinte", "Nouvelle description", "Nouveau lieu", 456, date_test)
         self.assertEqual(preuve.type, "Empreinte", "modifierPreuve : Type modifié")
+        self.assertEqual(preuve.description, "Nouvelle description", "modifierPreuve : Description modifiée")
+        self.assertEqual(preuve.lieu, "Nouveau lieu", "modifierPreuve : Lieu modifié")
+        self.assertEqual(preuve.utilisateur, 456, "modifierPreuve : utilisateur modifié")
+        self.assertEqual(preuve.dateDecouverte, date_test, "modifierPreuve : DateDecouverte modifiée")
 
         preuve1 = Preuve(4, "Sang", "Description initiale", "Lieu initial", 1213, date_test)
         preuve1.modifierPreuve("Cheveux", "Description modifiée", "Nouveau lieu", 1011, nouvelle_date)
+        self.assertEqual(preuve1.type, "Cheveux", "modifierPreuve : Type modifié")
+        self.assertEqual(preuve1.description, "Description modifiée", "modifierPreuve : Description modifiée")
+        self.assertEqual(preuve1.lieu, "Nouveau lieu", "modifierPreuve : Lieu modifié")
+        self.assertEqual(preuve1.utilisateur, 1011, "modifierPreuve : utilisateur modifié")
         self.assertEqual(preuve1.dateDecouverte, nouvelle_date, "modifierPreuve : Date de découverte modifiée")
 
-
         # Test modification avec type, description, lieu vides
-        self.assertRaises(ValueError, preuve.modifierPreuve, "", "", "", 456, date_test)
+        self.assertRaises(ValueError, preuve.modifierPreuve, "", "", "", 45, date_test)
 
         # Test modification avec utilisateur invalide
-        self.assertRaises(ValueError, preuve.modifierPreuve, "Empreinte", "Nouvelle description", "Nouveau lieu", -456,
+        self.assertRaises(ValueError, preuve.modifierPreuve, "Empreinte", "Nouvelle description", "Nouveau lieu", -45,
                           date_test)
+        # Test modification avec taille négative
+        self.assertRaises(ValueError, preuve.modifierPreuve, "Empreinte", "Description", "Lieu", -180, date_test)
+
+        # Test modification avec une date dans le futur
+        datefutur = datetime(2050, 1, 1)
+        self.assertRaises(ValueError, Preuve, 3, "Fibre", "Description future", "Lieu futur", 789, datefutur)
 
     def test_supprimerPreuve(self):
         date_test = datetime.now()
