@@ -491,7 +491,11 @@ class TestEnquete (unittest.TestCase):
             Enquete(1, "Enquête Test", datetime.now(), "Lieu Fictif", 5, statut="")
         with self.assertRaises(TypeError):
             Enquete(1, "Enquête Test", "1998/20/12", "Lieu Fictif", 5)
-
+            
+    def associer_suspect(self):
+        personnne = Personne(1, "Dupont", "Jean", 30, "suspect")
+        with self.assertRaises(TypeError):
+            Enquete.associerSuspect(personnne)
     def test_to_dict(self):
         enqueteDict = self.enquete.to_dict()
         self.assertEqual(enqueteDict['idEnquete'], 1)
