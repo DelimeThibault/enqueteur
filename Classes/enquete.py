@@ -65,6 +65,7 @@ class Enquete:
         self.preuves = preuves or []
         self.enqueteurs = enqueteurs or []
         self.statut = statut
+        self.supprime = False
 
     def to_dict(self) -> dict:
         """
@@ -120,29 +121,39 @@ class Enquete:
     def modifierInformations(self, titre: str = None, dateDebut: datetime = None,
                              statut: str = None, lieu: str = None, priorite: int = None) -> None:
 
+        if self.supprime:
+            raise Exception("Modification interdite sur une enquête supprimée.")
 
-      
         if titre is not None:
+            if not isinstance(titre, str) or not titre.strip():
+                raise ValueError("titre ne doit pas être une chaîne vide.")
             self.titre = titre
+
         if dateDebut is not None:
+            if not isinstance(dateDebut, datetime):
+                raise TypeError("dateDebut doit être une instance de datetime.")
+            if dateDebut > datetime.now():
+                raise ValueError("La date de début ne peut pas être dans le futur.")
             self.dateDebut = dateDebut
+
         if statut is not None:
+            if not isinstance(statut, str) or not statut.strip():
+                raise ValueError("statut ne doit pas être une chaîne vide.")
             self.statut = statut
+
         if lieu is not None:
+            if not isinstance(lieu, str) or not lieu.strip():
+                raise ValueError("lieu ne doit pas être une chaîne vide.")
             self.lieu = lieu
+
         if priorite is not None:
+            if not isinstance(priorite, int) or priorite <= 0:
+                raise ValueError("priorite doit être un entier positif.")
             self.priorite = priorite
 
-    def supprimerInformations(self) -> None:
+    def supprimerInformations(self) :
     
-        self.idEnquete = None
-        self.titre = None
-        self.dateDebut = None
-        self.statut = None
-        self.lieu = None
-        self.priorite = None
-        self.preuves.clear()
-        self.suspects.clear()
+        self.supprime = True
 
     def classer_enquete(self):
         """Classer l'enquête"""
