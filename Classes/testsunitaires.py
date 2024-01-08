@@ -380,25 +380,37 @@ class TestEnquete (unittest.TestCase):
         self.enquete = Enquete(1, "Enquête Test", self.date_Debut, "Lieu Fictif", 5)
 
     def testInit(self):
-        self.assertEqual(self.enquete.idEnquete, 1)
-        self.assertEqual(self.enquete.titre, "Enquête Test")
-        self.assertEqual(self.enquete.dateDebut, self.date_Debut)
-        self.assertEqual(self.enquete.lieu, "Lieu Fictif")
-        self.assertEqual(self.enquete.priorite, 5)
-        self.assertEqual(self.enquete.preuves, [])
-        self.assertEqual(self.enquete.suspects, [])
-        self.assertEqual(self.enquete.enqueteurAssocie, None)
-        self.assertEqual(self.enquete.enqueteurs, [])
-        self.assertEqual(self.enquete.statut, "En cours")
-        self.assertIsInstance(self.enquete.idEnquete, int)
-        self.assertIsInstance(self.enquete.titre, str)
-        self.assertIsInstance(self.enquete.dateDebut, datetime)
-        self.assertIsInstance(self.enquete.lieu, str)
-        self.assertIsInstance(self.enquete.priorite, int)
-        self.assertIsInstance(self.enquete.preuves, list)
-        self.assertIsInstance(self.enquete.suspects, list)
-        self.assertIsInstance(self.enquete.enqueteurs, list)
-        self.assertIsInstance(self.enquete.statut, str)
+        date_test = datetime.now()
+
+        # Test valide
+        enquete_valide = Enquete(1, "Enquête Test", date_test, "Lieu Test", 5, "en cours")
+        self.assertEqual(enquete_valide.idEnquete, 1, "__init__ : idEnquete valide")
+        self.assertEqual(enquete_valide.titre, "Enquête Test", "__init__ : Titre valide")
+        self.assertEqual(enquete_valide.dateDebut, date_test, "__init__ : DateDebut valide")
+        self.assertEqual(enquete_valide.lieu, "Lieu Test", "__init__ : Lieu valide")
+        self.assertEqual(enquete_valide.priorite, 5, "__init__ : Priorite valide")
+        self.assertEqual(enquete_valide.statut, "en cours", "__init__ : Statut valide")
+
+        # Test avec une date passée
+        date_past = datetime(2020, 5, 17)
+        enquete_past = Enquete(2, "Enquête Passée", date_past, "Lieu Passé", 3, "en cours")
+        self.assertEqual(enquete_past.dateDebut, date_past, "__init__ : DateDebut passée")
+
+        # Test avec date dans le future
+        date_futur = datetime(2025, 12, 31)
+        self.assertRaises(ValueError, Enquete, 1, "Enquête Test", date_futur, "Lieu Test", 5)
+
+        # Test avec id invalide
+        self.assertRaises(ValueError, Enquete, -1, "Enquête Test", date_test, "Lieu Test", 5, "en cours")
+        self.assertRaises(ValueError, Enquete, 0, "Enquête Test", date_test, "Lieu Test", 5, "en cours")
+
+        # Test avec titre ou lieu vide
+        self.assertRaises(ValueError, Enquete, 1, "", date_test, "Lieu Test", 5, "en cours")
+        self.assertRaises(ValueError, Enquete, 1, "Enquête Test", date_test, "", 5, "en cours")
+
+        # Test avec priorité invalide
+        self.assertRaises(ValueError, Enquete, 1, "Enquête Test", date_test, "Lieu Test", -1, "en cours")
+        self.assertRaises(ValueError, Enquete, 1, "Enquête Test", date_test, "Lieu Test", 0, "en cours")
 
     def testErreurs(self):
         with self.assertRaises(ValueError):
