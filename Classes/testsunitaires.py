@@ -225,6 +225,11 @@ class TestSuspect(unittest.TestCase):
         nouvelle_date_incrimination = "2022-07-14"
         suspect.modifier_suspect("Nouveau Nom", "Nouveau Prénom", 41, nouvelle_date_naissance, "Nouvelle Adresse",
                                  "Nouvelle Nationalité", "185cm", "Nouvel ADN", 456, nouvelle_date_incrimination)
+
+        self.assertEqual(suspect.idSuspect, 1, "modifier_suspect : idSupect inchangé")
+        self.assertEqual(suspect.idPersonne, 1, "modifier_suspect : idPersonne inchangé")
+
+
         self.assertEqual(suspect.nom, "Nouveau Nom", "modifier_suspect : Nom modifié")
         self.assertEqual(suspect.prenom, "Nouveau Prénom", "modifier_suspect : Prénom modifié")
         self.assertEqual(suspect.age, 41, "modifier_suspect : Age modifié")
@@ -242,14 +247,70 @@ class TestSuspect(unittest.TestCase):
         with self.assertRaises(ValueError):
             suspect.modifier_suspect("", "", 0, "date invalide", "", "", "", "", -1, "date invalide")
 
-    def test_supprimer(self):
-        # Création d'un suspect pour le test
-        suspect = Suspect(1, 1, "Nom", "Prénom", datetime.now(), 40, "suspect", "Adresse", 123, "Nationalité", "180cm",
-                          datetime.now(), "ADN")
-
-        # Test de la suppression
+    def test_modification_preuve_supprimee(self):
+        # Création et suppression d'une preuve
+        date_test = datetime.now()
+        suspect = Suspect(1, 1, "Nom", "Prénom", date_test, 40, "suspect", "Adresse", 123, "Nationalité", "180cm",
+                          date_test, "ADN")
         suspect.supprimer()
-        self.assertTrue(suspect.supprimer, "supprimer : Suspect correctement supprimé")
+
+
+        # Test de modification d'un Suspect supprimé
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("", "Prénom Valide", 30, "1980-01-01", "Adresse Valide", "Nationalité Valide",
+                                 "180cm", "ADN Valide", 123, "2022-07-14")
+
+    def test_modifier_suspect_valeurs_invalides(self):
+        date_naissance = datetime(1980, 1, 1)
+        date_incrimination = datetime.now()
+        suspect = Suspect(1, 1, "Nom", "Prénom", date_naissance, 40, "suspect", "Adresse", 123, "Nationalité", "180cm",
+                          date_incrimination, "ADN")
+
+        # Test modification avec âge négatif
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("Nom Valide", "Prénom Valide", -30, "1980-01-01", "Adresse Valide",
+                                     "Nationalité Valide", "180cm", "ADN Valide", 123, "2022-07-14")
+
+        """
+        # Test modification avec une date de naissance dans le futur
+
+        date_future = datetime(2025, 12, 31)
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("Nom Valide", "Prénom Valide", 30, date_future, "Adresse Valide",
+                                     "Nationalité Valide", "180cm", "ADN Valide", 123, "2022-07-14")
+        """
+
+        # Test modification avec nom vide
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("", "Prénom Valide", 30, "1980-01-01", "Adresse Valide", "Nationalité Valide",
+                                     "180cm", "ADN Valide", 123, "2022-07-14")
+
+        # Test modification avec prénom vide
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("Nom Valide", "", 30, "1980-01-01", "Adresse Valide", "Nationalité Valide",
+                                     "180cm", "ADN Valide", 123, "2022-07-14")
+
+        # Test modification avec adresse vide
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("Nom Valide", "Prénom Valide", 30, "1980-01-01", "", "Nationalité Valide", "180cm",
+                                     "ADN Valide", 123, "2022-07-14")
+
+        # Test modification avec nationalité vide
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("Nom Valide", "Prénom Valide", 30, "1980-01-01", "Adresse Valide", "", "180cm",
+                                     "ADN Valide", 123, "2022-07-14")
+
+        # Test modification avec taille vide
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("Nom Valide", "Prénom Valide", 30, "1980-01-01", "Adresse Valide",
+                                     "Nationalité Valide", "", "ADN Valide", 123, "2022-07-14")
+
+        # Test modification avec ADN vide
+        with self.assertRaises(ValueError):
+            suspect.modifier_suspect("Nom Valide", "Prénom Valide", 30, "1980-01-01", "Adresse Valide",
+                                     "Nationalité Valide", "180cm", "", 123, "2022-07-14")
+
+
 
 class TestEnqueteur(unittest.TestCase):
 
