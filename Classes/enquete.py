@@ -48,6 +48,8 @@ class Enquete:
             raise ValueError("statut ne doit pas être une chaîne vide.")
         if not isinstance(dateDebut, datetime):
             raise TypeError("dateDebut doit être une instance de datetime.")
+        if dateDebut > datetime.now():
+            raise ValueError("La date de début ne peut pas être dans le futur.")
 
 
 
@@ -117,6 +119,8 @@ class Enquete:
 
     def modifierInformations(self, titre: str = None, dateDebut: datetime = None,
                              statut: str = None, lieu: str = None, priorite: int = None) -> None:
+
+
       
         if titre is not None:
             self.titre = titre
