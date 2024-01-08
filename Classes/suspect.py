@@ -54,12 +54,26 @@ class Suspect(Personne):
         return {**personne_dict, **suspect_dict}
 
 
-    def modifier_suspect(self, nouveau_nom: str, nouveau_prenom: str, nouvel_age: int, nouvelle_date_naissance: str,    
+    def modifier_suspect(self, nouveau_nom: str, nouveau_prenom: str, nouvel_age: int, nouvelle_date_naissance: str,
                          nouvelle_adresse: str, nouvelle_nationalite: str, nouvelle_taille: str, nouvel_adn: str,
                          nouvel_utilisateur: int, nouvelle_date_incrimination: str):
         """
         Modifie les attributs du suspect.
         """
+        if not isinstance(self.idPersonne, int) or self.idPersonne <= 0:
+            raise ValueError("idPersonne doit être un entier positif.")
+        if not isinstance(self.idSuspect, int) or self.idSuspect <= 0:
+            raise ValueError("idSuspect doit être un entier positif.")
+        if not isinstance(nouvel_age, int) or nouvel_age <= 0:
+            raise ValueError("age doit être un entier positif.")
+        if not isinstance(nouvel_utilisateur, int) or nouvel_utilisateur <= 0:
+            raise ValueError("utilisateur doit être un entier positif.")
+        if not all(isinstance(arg, str) and arg for arg in (nouveau_nom, nouveau_prenom, nouvelle_adresse, nouvelle_nationalite , nouvelle_taille, nouvel_adn)):
+            raise ValueError(
+                "nom, prenom, fonction, adresse, nationalite, taille, et adn ne doivent pas être des chaînes vides.")
+
+        
+
         self.nom = nouveau_nom
         self.prenom = nouveau_prenom
         self.age = nouvel_age
