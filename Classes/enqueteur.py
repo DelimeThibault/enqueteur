@@ -67,16 +67,24 @@ class Enqueteur(Personne):
 
         PRE : enquete: Instance de la classe Enquete à assigner.
         """
-        if enquete not in self.enquetesAssignees:
+        if enquete in self.enquetesAssignees:
+            raise ValueError("L'enquête est déjà assignée à l'enquêteur.")
+        else:
             self.enquetesAssignees.append(enquete)
 
     def modifierEnqueteur(self, nouveau_nom: str, nouveau_prenom: str, nouvel_age: int, nouveau_grade: str) -> None:
-        
+        if self.estSupprime:
+            raise ValueError("L'enquêteur a été supprimé et ne peut pas être modifié.")
+
+        if not nouveau_nom or not nouveau_prenom or nouvel_age <= 0 or not nouveau_grade:
+            raise ValueError("Les paramètres de modification sont invalides.")
+
         self.nom = nouveau_nom
         self.prenom = nouveau_prenom
         self.age = nouvel_age
         self.grade = nouveau_grade
 
     def supprimerEnqueteur(self) -> None:
-        
+        if self.estSupprime:
+            raise ValueError("L'enquêteur est déjà supprimé. ")
         self.estSupprime = True

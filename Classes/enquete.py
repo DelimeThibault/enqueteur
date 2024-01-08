@@ -157,4 +157,6 @@ class Enquete:
 
     def classer_enquete(self):
         """Classer l'enquête"""
+        if self.statut == "Classé" :
+            raise ValueError("L'enquête est déjà classé.")
         self.statut = "Classé"

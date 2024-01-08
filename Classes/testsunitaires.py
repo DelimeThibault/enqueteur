@@ -311,12 +311,10 @@ class TestSuspect(unittest.TestCase):
             suspect.modifier_suspect("Nom Valide", "Prénom Valide", 30, "1980-01-01", "Adresse Valide",
                                      "Nationalité Valide", "180cm", "", 123, "2022-07-14")
 
-
-
 class TestEnqueteur(unittest.TestCase):
 
     def test___init__(self):
-        # Test avec valeurs valides
+        # Test avec des valeurs valides
         enqueteur_valide = Enqueteur(1, "NomEnqueteur", "PrénomEnqueteur", 40, 100, "GradeEnqueteur", "enquêteur")
         self.assertEqual(enqueteur_valide.idPersonne, 1, "__init__ : idPersonne valide")
         self.assertEqual(enqueteur_valide.nom, "NomEnqueteur", "__init__ : Nom valide")
@@ -326,19 +324,23 @@ class TestEnqueteur(unittest.TestCase):
         self.assertEqual(enqueteur_valide.grade, "GradeEnqueteur", "__init__ : Grade valide")
         self.assertEqual(enqueteur_valide.fonction, "enquêteur", "__init__ : Fonction valide")
 
-        # Test avec idPersonne invalide
+        # Test prénom avec un tiret
+        enqueteur_prenom_tiret = Enqueteur(1, "NomEnqueteur", "Pierre-Henry", 35, 100, "GradeEnqueteur", "enquêteur")
+        self.assertEqual(enqueteur_prenom_tiret.prenom, "Pierre-Henry", "Le prénom est correct")
+
+        # Test prénom composé
+        enqueteur_prenom_compose = Enqueteur(1, "NomEnqueteur", "Pierre Henry", 35, 100, "GradeEnqueteur", "enquêteur")
+        self.assertEqual(enqueteur_prenom_compose.prenom, "Pierre Henry", "Le prénom est correct")
+
+        # Test avec ID invalide
         with self.assertRaises(ValueError):
             Enqueteur(-1, "NomEnqueteur", "PrénomEnqueteur", 40, 100, "GradeEnqueteur", "enquêteur")
-
-        # Test avec idEnqueteur invalide
-        with self.assertRaises(ValueError):
-            Enqueteur(1, "NomEnqueteur", "PrénomEnqueteur", 40, -100, "GradeEnqueteur", "enquêteur")
-
-        # Test avec nom vide
+            
+        # Test avec nom invalide
         with self.assertRaises(ValueError):
             Enqueteur(1, "", "PrénomEnqueteur", 40, 100, "GradeEnqueteur", "enquêteur")
 
-        # Test avec prénom vide
+        # Test avec prénom invalide
         with self.assertRaises(ValueError):
             Enqueteur(1, "NomEnqueteur", "", 40, 100, "GradeEnqueteur", "enquêteur")
 
@@ -354,22 +356,54 @@ class TestEnqueteur(unittest.TestCase):
         with self.assertRaises(ValueError):
             Enqueteur(1, "NomEnqueteur", "PrénomEnqueteur", 40, 100, "GradeEnqueteur", "")
 
+        # Test avec idEnqueteur invalide
+        with self.assertRaises(ValueError):
+            Enqueteur(1, "NomEnqueteur", "PrénomEnqueteur", 40, -100, "GradeEnqueteur", "enquêteur")
+
+        # Test avec nom non string
+        with self.assertRaises(ValueError):
+            Enqueteur(1, 123, "PrénomEnqueteur", 40, 100, "GradeEnqueteur", "enquêteur")
 
     def test_to_dict(self):
-        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant',"enquêteur")
+        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant', "enquêteur")
         result = enqueteur.to_dict()
+
         expected_keys = ['idPersonne', 'nom', 'prenom', 'age', 'fonction', 'idEnqueteur', 'grade']
-        self.assertTrue(all(key in result for key in expected_keys),
-                        "Les clés attendues ne sont pas toutes présentes dans le dictionnaire")
+        self.assertTrue(all(key in result for key in expected_keys), "Les clés attendues sont toutes présentes dans le dictionnaire")
+
+        self.assertEqual(result['idPersonne'], 1)
+        self.assertEqual(result['nom'], 'Dupont')
+        self.assertEqual(result['prenom'], 'Jean')
+        self.assertEqual(result['age'], 40)
+        self.assertEqual(result['idEnqueteur'], 100)
+        self.assertEqual(result['grade'], 'Lieutenant')
+        self.assertEqual(result['fonction'], 'enquêteur')
 
     def test_assignerEnquete(self):
-        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant',"enquêteur")
+        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant', "enquêteur")
         enquete = Enquete(1, 'Enquête Test', datetime.now(), 'Paris', 1)
+
+        # Test assignation
         enqueteur.assignerEnquete(enquete)
-        self.assertIn(enquete, enqueteur.enquetesAssignees, "L'enquête n'a pas été correctement assignée")
+        self.assertIn(enquete, enqueteur.enquetesAssignees, "L'enquête a été correctement assignée")
+
+        # Test d'assigner une deuxième fois la même enquête
+        with self.assertRaises(ValueError):
+            enqueteur.assignerEnquete(enquete)
+
+        # Test assignation d'une enquête à deux enquêteurs différents
+        enqueteur2 = Enqueteur(2, 'Martin', 'Paul', 45, 101, 'Capitaine', "enquêteur")
+        enqueteur2.assignerEnquete(enquete)
+        self.assertIn(enquete, enqueteur2.enquetesAssignees, "L'enquête a été correctement assignée à l'autre enquêteur")
+
+        enquete.terminee = True
+        with self.assertRaises(ValueError):
+            enqueteur.assignerEnquete(enquete)
 
     def test_modifierEnqueteur(self):
-        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant',"enquêteur")
+        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant', "enquêteur")
+        
+        # Ajoutez des assertions pour vérifier que les modifications ont été correctement effectuées
         enqueteur.modifierEnqueteur('Martin', 'Paul', 45, 'Capitaine')
         self.assertEqual(enqueteur.nom, 'Martin')
         self.assertEqual(enqueteur.prenom, 'Paul')
@@ -377,10 +411,44 @@ class TestEnqueteur(unittest.TestCase):
         self.assertEqual(enqueteur.grade, 'Capitaine')
         self.assertEqual(enqueteur.fonction, 'enquêteur')
 
-    def test_supprimerEnqueteur(self):
-        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant',"enquêteur")
+        # Cas invalide
+        # nouveau_nom est une chaîne vide
+        with self.assertRaises(ValueError):
+            enqueteur.modifierEnqueteur('', 'Paul', 45, 'Capitaine')
+
+        # nouveau_prenom est une chaîne vide
+        with self.assertRaises(ValueError):
+            enqueteur.modifierEnqueteur('Martin', '', 45, 'Capitaine')
+
+        # nouvel_age est un entier positif
+        with self.assertRaises(ValueError):
+            enqueteur.modifierEnqueteur('Martin', 'Paul', -5, 'Capitaine')
+
+        # nouveau_grade est une chaîne vide
+        with self.assertRaises(ValueError):
+            enqueteur.modifierEnqueteur('Martin', 'Paul', 45, '')
+
+        # Tente de modifier l'enquêteur supprimé
+        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant', "enquêteur")
         enqueteur.supprimerEnqueteur()
-        self.assertTrue(enqueteur.estSupprime, "L'enquêteur n'a pas été marqué comme supprimé")
+        # Tentative de modification après suppression
+        with self.assertRaises(ValueError):
+            enqueteur.modifierEnqueteur('Martin', 'Paul', 45, 'Capitaine')
+
+    def test_supprimerEnqueteur(self):
+        enqueteur = Enqueteur(1, 'Dupont', 'Jean', 40, 100, 'Lieutenant', "enquêteur")
+
+        enqueteur.supprimerEnqueteur()
+
+        # Vérifier que l'enquêteur est marqué comme supprimé
+        self.assertTrue(enqueteur.estSupprime, "L'enquêteur a été marqué comme supprimé")
+
+        # Tentative de suppression de l'enquêteur déjà supprimé
+        with self.assertRaises(ValueError):
+            enqueteur.supprimerEnqueteur()
+
+        # Vérifier que l'enquêteur est toujours marqué comme supprimé
+        self.assertTrue(enqueteur.estSupprime, "L'enquêteur devrait toujours être marqué comme supprimé")
 
 
 class TestPersonne (unittest.TestCase):
@@ -398,26 +466,23 @@ class TestPersonne (unittest.TestCase):
         self.assertIsInstance(personne.fonction, str)
 
     def testLimites(self):
-        personne = Personne(1000000, "Dupont", "Jean", 30, "enquêteur")
-        self.assertEqual(personne.idPersonne, 1000000)
-        personne2 = Personne(2, "Dupont", "Jean", 120, "enquêteur")
-        self.assertEqual(personne2.age, 120)
+        # Id invalide
+        with self.assertRaises(ValueError):
+            Personne(-1, "Dupont", "Jean", 30, "suspect")
+        with self.assertRaises(ValueError):
+            Personne(0, "Dupont", "Jean", 30, "enquêteur")
+        # Nom invalide
+        with self.assertRaises(ValueError):
+            Personne(1, "", "Jean", 30, "suspect")
+        # Prénom invalide
+        with self.assertRaises(ValueError):
+            Personne(1, "Dupont", "", 30, "suspect")
+        # Âge invalide
         with self.assertRaises(ValueError):
             Personne(1, "Dupont", "Jean", 0, "enquêteur")
         with self.assertRaises(ValueError):
             Personne(1, "Dupont", "Jean", -1, "suspect")
-        with self.assertRaises(ValueError):
-            Personne(1, "Dupont", "Jean", 30, "ishfdsjhkgjd")
-        with self.assertRaises(ValueError):
-            Personne(-1, "Dupont", "Jean", 30, "suspect")
-        with self.assertRaises(ValueError):
-            Personne(1, "", "Jean", 30, "suspect")
-        with self.assertRaises(ValueError):
-            Personne(1, "Dupont", "", 30, "suspect")
-        with self.assertRaises(ValueError):
-            Personne(-1, "Dupont", "Jean", 30, "enquêteur")
-        with self.assertRaises(ValueError):
-            Personne(0, "Dupont", "Jean", 30, "enquêteur")
+        # Fonction invalide
         with self.assertRaises(ValueError):
             Personne(1, "Dupont", "Jean", 30, "ishfdsjhkgjd")
         with self.assertRaises(ValueError):
@@ -434,7 +499,12 @@ class TestPersonne (unittest.TestCase):
         }
         self.assertEqual(personnne.to_dict(), dictionnaireAttendu)
         self.assertIsInstance(personnne.to_dict(), dict)
-
+        
+        self.assertEqual(dictionnaireAttendu["idPersonne"], 1)
+        self.assertEqual(dictionnaireAttendu["nom"], "Dupont")
+        self.assertEqual(dictionnaireAttendu["prenom"], "Jean")
+        self.assertEqual(dictionnaireAttendu["age"], 30)
+        self.assertEqual(dictionnaireAttendu["fonction"], "suspect")
 
 class TestEnquete (unittest.TestCase):
     def setUp(self):
@@ -558,11 +628,6 @@ class TestEnquete (unittest.TestCase):
         self.enquete.classer_enquete()
         self.assertEqual(self.enquete.statut, "Classé")
         self.assertEqual(self.enquete.priorite, 5)
-
-
-
-
-
 
 if __name__ == '__main__':
     unittest.main()
