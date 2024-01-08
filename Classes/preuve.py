@@ -39,7 +39,8 @@ class Preuve:
             raise ValueError("lieu ne doit pas être une chaîne vide.")
         if not isinstance(dateDecouverte, datetime):
             raise TypeError("dateDecouverte doit être une instance de datetime.")
-
+        if dateDecouverte > datetime.now():
+            raise ValueError("dateDecouverte ne peut pas etre dans le futur.")
 
         self.idPreuve = idPreuve
         self.type = type
@@ -55,9 +56,30 @@ class Preuve:
         
         if not all(isinstance(arg, str) and arg for arg in (nouveau_type, nouvelle_description, nouveau_lieu)):
             raise ValueError("type, description, lieu ne doivent pas être des chaînes vides.")
+
         if not isinstance(nouvel_utilisateur, int) or nouvel_utilisateur <= 0:
             raise ValueError("utilisateur doit être un entier positif.")
 
+        if not isinstance(nouveau_type, str) or not nouveau_type.strip():
+            raise ValueError("Le nouveau type ne doit pas être une chaîne vide.")
+
+        if not isinstance(nouvelle_description, str) or not nouvelle_description.strip():
+            raise ValueError("La nouvelle description ne doit pas être une chaîne vide.")
+
+        if not isinstance(nouveau_lieu, str) or not nouveau_lieu.strip():
+            raise ValueError("Le nouveau lieu ne doit pas être une chaîne vide.")
+
+        if not isinstance(nouvel_utilisateur, int) or nouvel_utilisateur <= 0:
+            raise ValueError("Le nouvel utilisateur doit être un entier positif.")
+
+        if not isinstance(nouvelle_dateDecouverte, datetime):
+            raise TypeError("La nouvelle date de découverte doit être une instance de datetime.")
+
+        if nouvelle_dateDecouverte > datetime.now():
+            raise ValueError("La nouvelle date de découverte ne peut pas être dans le futur.")
+
+        if self.supprime:
+            raise Exception("Modification interdite sur une preuve supprimée.")
 
         self.type = nouveau_type
         self.description = nouvelle_description
