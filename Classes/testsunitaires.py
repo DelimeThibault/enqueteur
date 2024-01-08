@@ -12,21 +12,27 @@ class TestPreuve(unittest.TestCase):
 
     def test___init__(self):
         date_test = datetime.now()
-        # Test avec valeurs valides
+        # Tests valides
         preuve_valide = Preuve(1, "ADN", "Description", "Lieu", 123, date_test)
         self.assertEqual(preuve_valide.idPreuve, 1, "__init__ : idPreuve valide")
-        # Test avec une date spécifique dans le passé
+        self.assertEqual(preuve_valide.type, "ADN", "__init__ : Type valide")
+        self.assertEqual(preuve_valide.description, "Description", "__init__ : Description valide")
+        self.assertEqual(preuve_valide.lieu, "Lieu", "__init__ : Lieu valide")
+        self.assertEqual(preuve_valide.utilisateur, 123, "__init__ : utilisateur valide")
+        self.assertEqual(preuve_valide.dateDecouverte, date_test, "__init__ : DateDecouverte valide")
+
+        # Test avec une date passé
         date_past = datetime(2020, 5, 17)
         preuve_past = Preuve(2, "Empreinte", "Description passée", "Lieu passé", 456, date_past)
         self.assertEqual(preuve_past.dateDecouverte, date_past, "__init__ : Date de découverte passée")
-        # Test avec une date spécifique dans le futur (hypothétique)
-        date_future = datetime(2025, 12, 31)
-        preuve_future = Preuve(3, "Fibre", "Description future", "Lieu futur", 789, date_future)
-        self.assertEqual(preuve_future.dateDecouverte, date_future, "__init__ : Date de découverte future")
 
+        # Test avec une date futur (erreur)
+        datefutur = datetime(2025, 12, 31)
+        self.assertRaises(ValueError, Preuve, 3, "couteau", "Description future", "Lieu futur", 789, datefutur)
 
-        # Test avec idPreuve invalide
+        # Test avec id invalide
         self.assertRaises(ValueError, Preuve, -1, "ADN", "Description", "Lieu", 123, date_test)
+        self.assertRaises(ValueError, Preuve, 0, "ADN", "Description", "Lieu", 123, date_test)
 
         # Test avec utilisateur invalide
         self.assertRaises(ValueError, Preuve, 1, "ADN", "Description", "Lieu", -123, date_test)
@@ -35,7 +41,7 @@ class TestPreuve(unittest.TestCase):
         self.assertRaises(ValueError, Preuve, 1, "", "", "", 123, date_test)
 
         # Test avec dateDeDecouverte invalide
-        self.assertRaises(TypeError, Preuve, 1, "ADN", "Description", "Lieu", 123, "non-date")
+        self.assertRaises(TypeError, Preuve, 1, "ADN", "Description", "Lieu", 123, "date")
 
     def test_modifierPreuve(self):
         date_test = datetime.now()
