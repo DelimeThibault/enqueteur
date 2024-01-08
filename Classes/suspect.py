@@ -72,7 +72,7 @@ class Suspect(Personne):
             raise ValueError(
                 "nom, prenom, fonction, adresse, nationalite, taille, et adn ne doivent pas être des chaînes vides.")
 
-        
+
 
         self.nom = nouveau_nom
         self.prenom = nouveau_prenom

@@ -122,15 +122,27 @@ class TestSuspect(unittest.TestCase):
     def test___init__(self):
         date_test = datetime.now()
         # Test avec valeurs valides
-        suspect_valide = Suspect(1, 1, "Devroye", "Lilian", date_test, 30, "suspect", "Rue de coquerie", 123, "Belge", "180cm", date_test, "ADN 1")
+        suspect_valide = Suspect(1, 1, "Devroye", "Lilian", date_test, 30, "suspect", "Rue de coquerie", 123, "Belge",
+                                 "180cm", date_test, "ADN 1")
+        self.assertEqual(suspect_valide.idPersonne, 1, "__init__ : idPersonne valide")
         self.assertEqual(suspect_valide.idSuspect, 1, "__init__ : idSuspect valide")
+        self.assertEqual(suspect_valide.age, 30, "__init__ : idSuspect valide")
         self.assertEqual(suspect_valide.nom, "Devroye", "__init__ : Nom valide")
         self.assertEqual(suspect_valide.prenom, "Lilian", "__init__ : Prénom valide")
-
+        self.assertEqual(suspect_valide.fonction, "suspect", "__init__ : fonction valide")
+        self.assertEqual(suspect_valide.adresse, "Rue de coquerie")
+        self.assertEqual(suspect_valide.utilisateur, 123, "__init__ : utilisateur valide")
+        self.assertEqual(suspect_valide.nationalite, "Belge", "__init__ : nationalité valide")
+        self.assertEqual(suspect_valide.taille, "180cm", "__init__ : taille valide")
+        self.assertEqual(suspect_valide.dateNaissance, date_test, "__init__ : dateNaissance valide")
+        self.assertEqual(suspect_valide.dateIncrimination, date_test, "__init__ : dateIncrimation valide")
+        self.assertEqual(suspect_valide.adn, "ADN 1", "__init__ : adn valide")
+        self.assertEqual(suspect_valide.enqueteAssociee, None, "__init__ : enqueteAssociee valide")
 
         # Test avec age invalide
         with self.assertRaises(ValueError):
-            Suspect(1, 2, "Nom", "Prénom", date_test, -30, "suspect", "Adresse", 123, "Nationalité", "180cm", date_test, "ADN")
+            Suspect(1, 2, "Nom", "Prénom", date_test, -30, "suspect", "Adresse", 123, "Nationalité", "180cm", date_test,
+                    "ADN")
 
         # Test avec adresse vide
         with self.assertRaises(ValueError):
@@ -138,7 +150,8 @@ class TestSuspect(unittest.TestCase):
 
         # Test avec dateNaissance invalide
         with self.assertRaises(TypeError):
-            Suspect(1, 4, "Nom", "Prénom", "date invalide", 30, "suspect", "Adresse", 123, "Nationalité", "180cm", date_test, "ADN")
+            Suspect(1, 4, "Nom", "Prénom", "date invalide", 30, "suspect", "Adresse", 123, "Nationalité", "180cm",
+                    date_test, "ADN")
 
         # Test avec idPersonne invalide
         with self.assertRaises(ValueError):
@@ -177,8 +190,7 @@ class TestSuspect(unittest.TestCase):
             # Test avec adn vide
         with self.assertRaises(ValueError):
             Suspect(1, 2, "Nom", "Prénom", date_test, 30, "suspect", "Adresse", 123, "Nationalité", "180cm",
-                     date_test, "")
-
+                    date_test, "")
 
     def test_to_dict(self):
         # Conversion de l'instance en dictionnaire
