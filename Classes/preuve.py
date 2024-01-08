@@ -31,8 +31,14 @@ class Preuve:
             raise ValueError("idPreuve doit être un entier positif.")
         if not isinstance(utilisateur, int) or utilisateur <= 0:
             raise ValueError("utilisateur doit être un entier positif.")
-        if not all(isinstance(arg, str) and arg for arg in (type, description, lieu)):
-            raise ValueError("type, description, lieu ne doivent pas être des chaînes vides.")
+        if not isinstance(type, str) or not type.strip():
+            raise ValueError("type ne doit pas être une chaîne vide.")
+        if not isinstance(description, str) or not description.strip():
+            raise ValueError("description ne doit pas être une chaîne vide.")
+        if not isinstance(lieu, str) or not lieu.strip():
+            raise ValueError("lieu ne doit pas être une chaîne vide.")
+        if not isinstance(dateDecouverte, datetime):
+            raise TypeError("dateDecouverte doit être une instance de datetime.")
 
 
         self.idPreuve = idPreuve

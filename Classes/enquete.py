@@ -36,11 +36,18 @@ class Enquete:
                 ValueError si titre,statut ou lieu sont des chaînes vides
                 TypeError si date n'est pas une instance de datetime.date
         """
-        if idEnquete <= 0 or priorite <= 0:
-            raise ValueError("idEnquete et priorite doivent être des entiers positifs.")
-
-        if not all((statut, titre, lieu)):
-            raise ValueError("statut, titre, lieu ne doivent pas être des chaînes vides.")
+        if not isinstance(idEnquete, int) or idEnquete <= 0:
+            raise ValueError("idEnquete doit être un entier positif.")
+        if not isinstance(priorite, int) or priorite <= 0:
+            raise ValueError("priorite doit être un entier positif.")
+        if not isinstance(titre, str) or not titre.strip():
+            raise ValueError("titre ne doit pas être une chaîne vide.")
+        if not isinstance(lieu, str) or not lieu.strip():
+            raise ValueError("lieu ne doit pas être une chaîne vide.")
+        if not isinstance(statut, str) or not statut.strip():
+            raise ValueError("statut ne doit pas être une chaîne vide.")
+        if not isinstance(dateDebut, datetime):
+            raise TypeError("dateDebut doit être une instance de datetime.")
 
 
 

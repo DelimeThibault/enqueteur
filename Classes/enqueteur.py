@@ -20,6 +20,20 @@ class Enqueteur(Personne):
         PRE : idEnquteur doit être un entier, mdp doit etre un entier
         POST : Un enquteur a été crée avec ses attributs idEnqueteur, grade, enquetesAssignees qui prendront la valeur de ce qui a été passé en paramètre
                 """
+        if not isinstance(idPersonne, int) or idPersonne <= 0:
+            raise ValueError("idPersonne doit être un entier positif.")
+        if not isinstance(idEnqueteur, int) or idEnqueteur <= 0:
+            raise ValueError("idEnqueteur doit être un entier positif.")
+        if not isinstance(nom, str) or not nom.strip():
+            raise ValueError("nom ne doit pas être une chaîne vide.")
+        if not isinstance(prenom, str) or not prenom.strip():
+            raise ValueError("prenom ne doit pas être une chaîne vide.")
+        if not isinstance(age, int) or age <= 0:
+            raise ValueError("age doit être un entier positif.")
+        if not isinstance(grade, str) or not grade.strip():
+            raise ValueError("grade ne doit pas être une chaîne vide.")
+        if not isinstance(fonction, str) or not fonction.strip():
+            raise ValueError("fonction ne doit pas être une chaîne vide.")
         super().__init__(idPersonne, nom, prenom, age, fonction)
         self.idEnqueteur = idEnqueteur
         self.grade = grade

@@ -3,6 +3,19 @@ from datetime import datetime
 class Suspect(Personne):
     def __init__(self, idPersonne: int, idSuspect: int, nom: str, prenom: str, dateNaissance: datetime, age: int, fonction: str,
                  adresse: str, utilisateur: int, nationalite: str, taille: str, dateIncrimination: datetime, adn: str, enqueteAssociee=None, PreuvesIncriminants: list = None):
+        if not isinstance(idPersonne, int) or idPersonne <= 0:
+            raise ValueError("idPersonne doit être un entier positif.")
+        if not isinstance(idSuspect, int) or idSuspect <= 0:
+            raise ValueError("idSuspect doit être un entier positif.")
+        if not isinstance(age, int) or age <= 0:
+            raise ValueError("age doit être un entier positif.")
+        if not isinstance(utilisateur, int) or utilisateur <= 0:
+            raise ValueError("utilisateur doit être un entier positif.")
+        if not all(isinstance(arg, str) and arg for arg in (nom, prenom, fonction, adresse, nationalite, taille, adn)):
+            raise ValueError(
+                "nom, prenom, fonction, adresse, nationalite, taille, et adn ne doivent pas être des chaînes vides.")
+        if not isinstance(dateNaissance, datetime):
+            raise TypeError("dateNaissance doit être une instance de datetime.")
         super().__init__(idPersonne, nom, prenom, age, fonction)
         self.idSuspect = idSuspect
         self.dateNaissance = dateNaissance

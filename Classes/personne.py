@@ -18,12 +18,21 @@ class Personne:
         POST : Une Personne est créée avec ses attributs idPersonne, nom, age, fonction qui prendront la valeur de ce qui a été passé en paramètre.
         RAISES : ValueError si idPersonne est négatif ou si fonction n'est pas 'suspect' ou 'enquêteur'.
         """
+        if not isinstance(idPersonne, int) or idPersonne <= 0:
+            raise ValueError("L'identifiant de la personne doit être un entier positif.")
+        if not isinstance(nom, str) or not nom.strip():
+            raise ValueError("Le nom ne doit pas être une chaîne vide.")
+        if not isinstance(prenom, str) or not prenom.strip():
+            raise ValueError("Le prénom ne doit pas être une chaîne vide.")
+        if not isinstance(age, int) or age <= 0:
+            raise ValueError("L'âge doit être un entier positif.")
+        if not isinstance(fonction, str) or fonction not in ['suspect', 'enquêteur']:
+            raise ValueError("La fonction doit être soit 'suspect' soit 'enquêteur'.")
 
         if idPersonne <= 0:
             raise ValueError("L'identifiant de la personne doit être positif.")
         if fonction not in ['suspect', 'enquêteur']:
             raise ValueError("La fonction doit être soit 'suspect' soit 'enquêteur'.")
-
         self.idPersonne = idPersonne
         self.nom = nom
         self.prenom = prenom
