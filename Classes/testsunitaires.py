@@ -83,6 +83,12 @@ class TestPreuve(unittest.TestCase):
         preuve.supprimerPreuve()
         self.assertTrue(preuve.supprime, "supprimerPreuve : Preuve supprimée")
 
+        # Modification d'une preuve supprimé
+        preuve1 = Preuve(2, "couteau", "Description", "Lieu", 12, date_test)
+        preuve1.supprimerPreuve()
+        with self.assertRaises(Exception):
+            preuve1.modifierPreuve("Empreinte", "Nouvelle Description", "Nouveau Lieu", 456, datetime.now())
+
     def test_toDict(self):
         date_test = datetime.now()
         preuve = Preuve(1, "ADN", "Description", "Lieu", 123, date_test)
