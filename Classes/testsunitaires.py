@@ -513,29 +513,42 @@ class TestEnquete (unittest.TestCase):
         self.enquete.ajouter_preuve(preuve)
         self.assertIn(preuve, self.enquete.preuves)
 
+    def test_modifierInformations(self):
+        date_test = datetime.now()
+        nouvelle_date = datetime(2022, 7, 14)
 
+        # Test valid modifications
+        enquete = Enquete(1, "Enquête Test", date_test, "Lieu Test", 5)
+        enquete.modifierInformations(titre="Nouvelle Enquête", dateDebut=nouvelle_date, statut="Terminée",
+                                     lieu="Nouveau Lieu", priorite=10)
+        self.assertEqual(enquete.titre, "Nouvelle Enquête", "modifierInformations : Titre modifié")
+        self.assertEqual(enquete.dateDebut, nouvelle_date, "modifierInformations : DateDebut modifiée")
+        self.assertEqual(enquete.statut, "Terminée", "modifierInformations : Statut modifié")
+        self.assertEqual(enquete.lieu, "Nouveau Lieu", "modifierInformations : Lieu modifié")
+        self.assertEqual(enquete.priorite, 10, "modifierInformations : Priorite modifiée")
 
-    def test_modifer_informations(self):
-        self.enquete.modifierInformations()
-        self.assertEqual(self.enquete.titre, "Enquête Test")
-        nouvelle_date = datetime.now()
-        self.enquete.modifierInformations(titre="nOUVEAu Titre", dateDebut=nouvelle_date, statut="Résolu", lieu="Nouveau Lieu", priorite=10)
-        self.assertEqual(self.enquete.titre, "nOUVEAu Titre")
-        self.assertEqual(self.enquete.dateDebut, nouvelle_date)
-        self.assertEqual(self.enquete.statut, "Résolu")
-        self.assertEqual(self.enquete.lieu, "Nouveau Lieu")
-        self.assertEqual(self.enquete.priorite, 10)
+        # Test modification avec titre, lieu ou statut vide
+        self.assertRaises(ValueError, enquete.modifierInformations, titre="", lieu="Nouveau Lieu", priorite=10)
+        self.assertRaises(ValueError, enquete.modifierInformations, titre="Nouvelle Enquête", lieu="", priorite=10)
+        self.assertRaises(ValueError, enquete.modifierInformations, titre="Nouvelle Enquête", lieu="Nouveau Lieu",
+                          statut="")
 
-    def test_supprimer_informations(self):
-        self.enquete.supprimerInformations()
-        self.assertIsNone(self.enquete.idEnquete)
-        self.assertIsNone(self.enquete.titre)
-        self.assertIsNone(self.enquete.dateDebut)
-        self.assertIsNone(self.enquete.statut)
-        self.assertIsNone(self.enquete.lieu)
-        self.assertIsNone(self.enquete.priorite)
-        self.assertEqual(self.enquete.preuves, [])
-        self.assertEqual(self.enquete.suspects, [])
+        # Test modification avec priorité invalide
+        self.assertRaises(ValueError, enquete.modifierInformations, titre="Nouvelle Enquête", lieu="Nouveau Lieu",
+                          priorite=-1)
+
+        # Test modification avec une date dans le futur
+        date_futur = datetime(2050, 1, 1)
+        self.assertRaises(ValueError, enquete.modifierInformations, dateDebut=date_futur)
+
+    def test_supprimerInformations(self):
+        date_test = datetime.now()
+        enquete = Enquete(1, "Enquête Test", date_test, "Lieu Test", 5)
+        enquete.supprimerInformations()
+        self.assertTrue(enquete.supprime, "supprimerInformations : Enquête supprimée")
+
+        with self.assertRaises(Exception):
+            enquete.modifierInformations(titre="Nouveau Titre", lieu="Nouveau Lieu")
 
     def test_classer_enquete(self):
         self.enquete.classer_enquete()
