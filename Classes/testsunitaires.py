@@ -247,15 +247,16 @@ class TestSuspect(unittest.TestCase):
         with self.assertRaises(ValueError):
             suspect.modifier_suspect("", "", 0, "date invalide", "", "", "", "", -1, "date invalide")
 
-    def test_modification_preuve_supprimee(self):
-        # Création et suppression d'une preuve
+    def test_modification_suspect_supprimee(self):
+        # Création et suppression d'un suspect
         date_test = datetime.now()
         suspect = Suspect(1, 1, "Nom", "Prénom", date_test, 40, "suspect", "Adresse", 123, "Nationalité", "180cm",
                           date_test, "ADN")
         suspect.supprimer()
+        self.assertTrue(suspect.supprimer, "supprimer : Suspect correctement supprimé")
 
 
-        # Test de modification d'un Suspect supprimé
+        # Test de modification d'un Suspect supprimé !
         with self.assertRaises(ValueError):
             suspect.modifier_suspect("", "Prénom Valide", 30, "1980-01-01", "Adresse Valide", "Nationalité Valide",
                                  "180cm", "ADN Valide", 123, "2022-07-14")
